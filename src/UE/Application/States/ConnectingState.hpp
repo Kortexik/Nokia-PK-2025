@@ -11,7 +11,9 @@ public:
     ConnectingState(Context& context);
     ConnectingState(Context& context, common::BtsId btsId);
 
+    void handleTimeout() override;
     void handleAttachAccept() final;
+    void handleAttachReject() final;
 };
 
 }
