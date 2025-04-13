@@ -33,9 +33,15 @@ jobs:
     - name: UT for COMMON
       run: make COMMON_UT
 
+    - name: run COMMON ut
+      run: ./COMMON/Tests/COMMON_UT
+
     - name: UT for UeApplication
       run: make UeApplicationUT
 
+    - name: run UEApplication ut
+      run: ./COMMON/Tests/COMMON_UT
+      
     - name: Next Steps
       run: echo "Add your next steps here"
 
