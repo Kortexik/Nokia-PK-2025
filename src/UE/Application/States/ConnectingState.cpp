@@ -15,7 +15,7 @@ ConnectingState::ConnectingState(Context &context, common::BtsId btsId)
 {
     context.user.showConnecting();
     context.bts.sendAttachRequest(btsId);
-    context.timer.startTimer(500);
+    context.timer.startTimer(std::chrono::milliseconds(500));
 }
 
 void ConnectingState::handleAttachAccept(){
