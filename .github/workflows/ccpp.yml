@@ -17,6 +17,13 @@ jobs:
         
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Clean Qt directory
+      run: |
+        if [ -d "/home/runner/work/Nokia-PK-2025/Qt/" ]; then
+          rm -rf /home/runner/work/Nokia-PK-2025/Qt/
+        fi
+        
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
     - name: cmake
