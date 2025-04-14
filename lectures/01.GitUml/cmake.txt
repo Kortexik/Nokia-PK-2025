@@ -1,0 +1,30 @@
+CMake
+
+
+1. Na początek zawsze polecam oficjalny tutorial. Raczej bez zaskoczeń; jest idiomatycznie i wyczerpująco,
+chociaż mało przyjaźnie dla czytelnika:
+Zaletą jest stopniowe przechodzenie od mocno uproszczonego podejścia do nowoczesnego podziału na niezależne targety.
+
+For starters, official CMake guide. As expected, it is idiomatic and complete, though not the most reader-friendly one.
+Its main advantage is gradual transition from a rather simplistic approach to a modern one, that involves 
+build target separation.
+
+https://cmake.org/cmake/help/latest/guide/tutorial/index.html
+
+2. Dla lubiących formę video, "piguła" od Jasona Turnera:
+	a. dłuższa https://www.youtube.com/watch?v=YbgH7yat-Jo
+	+ repo (stare) https://github.com/cpp-best-practices/gui_starter_template
+	i aktualne: https://github.com/cpp-best-practices/cmake_template
+	Moim zdaniem widać, że opierał się w sporej mierze na dokumentacji oficjalnej.
+
+For those who prefer videos to text, a compressed "cookbook" by Jason Turner.
+	a. the longer one https://www.youtube.com/watch?v=YbgH7yat-Jo
+	+ repo (old) https://github.com/cpp-best-practices/gui_starter_template
+	and current: https://github.com/cpp-best-practices/cmake_template
+	Seems to be based on the official docs.
+
+
+
+3. Bardzo przyjemna w czytaniu "książka kucharska", czyli "HOWTO" tudzież "JTZ" ;)
+A very nice HOWTO.
+https://cliutils.gitlab.io/modern-cmake/README.html
