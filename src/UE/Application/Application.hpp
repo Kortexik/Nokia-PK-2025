@@ -14,25 +14,26 @@ using common::ILogger;
 class Application : public IEventsHandler
 {
 public:
-    Application(PhoneNumber phoneNumber,
-                ILogger& iLogger,
-                IBtsPort& bts,
-                IUserPort& user,
-                ITimerPort& timer);
-    ~Application();
+  Application(PhoneNumber phoneNumber,
+              ILogger& iLogger,
+              IBtsPort& bts,
+              IUserPort& user,
+              ITimerPort& timer);
+  ~Application();
 
-    // ITimerEventsHandler interface
-    void handleTimeout() override;
+  // ITimerEventsHandler interface
+  void handleTimeout() override;
 
-    // IBtsEventsHandler interface
-    void handleSib(common::BtsId btsId) override;
-    void handleAttachAccept() override;
-    void handleAttachReject() override;
-    void handleDisconnected() override;
+  // IBtsEventsHandler interface
+  void handleSib(common::BtsId btsId) override;
+  void handleAttachAccept() override;
+  void handleAttachReject() override;
+  void handleDisconnected() override;
+  void handleSendMessage(common::PhoneNumber dest, const std::string& message) override;
 
 private:
-    Context context;
-    common::PrefixedLogger logger;
+  Context context;
+  common::PrefixedLogger logger;
 
 };
 
