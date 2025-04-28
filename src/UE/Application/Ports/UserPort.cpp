@@ -38,6 +38,12 @@ void UserPort::showConnected()
     menu.clearSelectionList();
     menu.addSelectionListItem("Compose SMS", "");
     menu.addSelectionListItem("View SMS", "");
+
+    gui.setAcceptCallback([&](){
+         if (menu.getCurrentItemIndex().second == 0){
+             setSmsComposeMode();
+         }
+     });
 }
 
 void UserPort::setSmsComposeMode()
