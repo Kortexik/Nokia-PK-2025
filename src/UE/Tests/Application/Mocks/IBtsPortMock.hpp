@@ -1,7 +1,10 @@
+
 #pragma once
 
-#include <gmock/gmock.h>
 #include "Ports/IBtsPort.hpp"
+#include <gmock/gmock.h>
+
+#include <Messages/PhoneNumber.hpp>
 
 namespace ue
 {
@@ -25,6 +28,7 @@ public:
     ~IBtsPortMock() override;
 
     MOCK_METHOD(void, sendAttachRequest, (common::BtsId), (final));
+    MOCK_METHOD(void, sendMessage, (common::PhoneNumber dest, const std::string& message), (final));
 };
 
 }
