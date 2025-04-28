@@ -14,4 +14,9 @@ void ConnectedState::handleDisconnected() {
     context.setState<NotConnectedState>();
 }
 
+void ConnectedState::handleSendMessage(common::PhoneNumber dest, const std::string& message)
+{
+    context.bts.sendMessage(dest, message);
+}
+
 }
