@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseState.hpp"
+#include "Messages/PhoneNumber.hpp"
 
 namespace ue
 {
@@ -23,6 +24,9 @@ public:
     void handleTimeout() override;
     void handleAcceptCall();
     void handleRejectCall();
+
+    void handleMenuSelection(const std::string& selection) override;
+    void handleDial(common::PhoneNumber to) override;
 private:
     common::PhoneNumber callingNumber{};
 };

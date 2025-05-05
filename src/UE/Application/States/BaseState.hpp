@@ -3,6 +3,7 @@
 #include "IEventsHandler.hpp"
 #include "Logger/PrefixedLogger.hpp"
 #include "Context.hpp"
+#include "Messages/PhoneNumber.hpp"
 
 namespace ue
 {
@@ -38,6 +39,12 @@ public:
     virtual void handleReject() override{
         logger.logDebug("Call Reject ignored");
     }
+    virtual void handleDial(common::PhoneNumber to) {
+        logger.logDebug("Dialing ignored");
+    }
+
+    virtual void handleMenuSelection(const std::string& selection) {}
+
 protected:
     Context& context;
     common::PrefixedLogger logger;

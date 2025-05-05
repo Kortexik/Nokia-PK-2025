@@ -47,4 +47,20 @@ void ConnectedState::handleRejectCall()
     context.timer.stopTimer();
     context.bts.sendCallDrop(callingNumber);
 }
+
+void ConnectedState::handleMenuSelection(const std::string& selection)
+{
+    if (selection == "Call")
+    {
+        logger.logDebug("Call Selected From Menu");
+        context.user.showDialing();
+    }
+}
+
+void ConnectedState::handleDial(common::PhoneNumber to)
+{
+    logger.logDebug("Dialing", to);
+    context.user.showDialing();
+    context.bts.sendCallRequest(to);
+}
 }

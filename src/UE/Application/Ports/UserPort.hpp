@@ -24,6 +24,8 @@ public:
     void showCallDropped(common::PhoneNumber from) override;
     void showIncomingText(common::PhoneNumber from, const std::string& text) override;
 
+    void showDialing() override;
+
 private:
     common::PrefixedLogger logger;
     IUeGui& gui;

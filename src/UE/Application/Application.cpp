@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "Messages/PhoneNumber.hpp"
 #include "States/NotConnectedState.hpp"
 
 namespace ue
@@ -73,6 +74,12 @@ void Application::handleAccept()
 void Application::handleReject()
 {
     context.state->handleReject();
+}
+
+
+void Application::handleDial(common::PhoneNumber to)
+{
+    context.state->handleDial(to);
 }
 
 }

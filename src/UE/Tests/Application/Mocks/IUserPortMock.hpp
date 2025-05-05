@@ -1,6 +1,8 @@
 #pragma once
 
+#include <gmock/gmock-function-mocker.h>
 #include <gmock/gmock.h>
+#include "Messages/PhoneNumber.hpp"
 #include "Ports/IUserPort.hpp"
 
 namespace ue
@@ -14,6 +16,7 @@ public:
     
     MOCK_METHOD(void, handleAccept, (), (final));
     MOCK_METHOD(void, handleReject, (), (final));
+    MOCK_METHOD(void, handleDial, (common::PhoneNumber to), (final));
 };
 
 class IUserPortMock : public IUserPort
@@ -30,6 +33,6 @@ public:
     MOCK_METHOD(void, showCallAccepted, (common::PhoneNumber from), (final));
     MOCK_METHOD(void, showCallDropped, (common::PhoneNumber from), (final));
     MOCK_METHOD(void, showIncomingText, (common::PhoneNumber from, const std::string& text), (final));
-
+    MOCK_METHOD(void, showDialing, (), (final));
 };
 }

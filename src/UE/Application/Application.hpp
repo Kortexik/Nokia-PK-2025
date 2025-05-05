@@ -37,6 +37,7 @@ public:
 
     void handleAccept() override;
     void handleReject() override;
+    void handleDial(common::PhoneNumber to) override;
 
 private:
     Context context;

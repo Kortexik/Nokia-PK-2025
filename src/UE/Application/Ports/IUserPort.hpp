@@ -12,6 +12,7 @@ public:
 
     virtual void handleAccept() = 0;
     virtual void handleReject() = 0;
+    virtual void handleDial(common::PhoneNumber to) = 0;
 };
 
 class IUserPort
@@ -27,6 +28,8 @@ public:
     virtual void showCallAccepted(common::PhoneNumber from) = 0;
     virtual void showCallDropped(common::PhoneNumber from) = 0;
     virtual void showIncomingText(common::PhoneNumber from, const std::string& text) = 0;
+
+    virtual void showDialing() = 0;
 };
 
 }

@@ -1,6 +1,8 @@
 #include "UserPort.hpp"
 #include "UeGui/IListViewMode.hpp"
 #include "UeGui/ITextMode.hpp"
+#include "UeGui/IDialMode.hpp"
+
 namespace ue
 {
 
@@ -37,6 +39,7 @@ void UserPort::showConnected()
     menu.clearSelectionList();
     menu.addSelectionListItem("Compose SMS", "");
     menu.addSelectionListItem("View SMS", "");
+    menu.addSelectionListItem("Call", "");
 }
 
 void UserPort::showCallRequest(common::PhoneNumber from)
@@ -71,6 +74,24 @@ void UserPort::showIncomingText(common::PhoneNumber from, const std::string& tex
 {
     auto& textMode = gui.setViewTextMode();
     textMode.setText("From:  " + std::to_string(from.value) + ":\n" + text);
+}
+
+
+void UserPort::showDialing()
+{
+    auto& dialMode = gui.setDialMode();
+
+    gui.setAcceptCallback([this, &dialMode]() {
+        auto enteredNumber = dialMode.getPhoneNumber();
+        logger.logDebug("Dialing number: ", enteredNumber.value);
+        if (handler) {
+            handler->handleDial(enteredNumber);
+        }
+    });
+
+    gui.setRejectCallback([this]() {
+        if (handler) handler->handleReject();
+    });
 }
 
 }
