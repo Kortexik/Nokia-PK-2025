@@ -11,7 +11,9 @@ class IUserEventsHandlerMock : public IUserEventsHandler
 public:
     IUserEventsHandlerMock();
     ~IUserEventsHandlerMock() override;
-
+    
+    MOCK_METHOD(void, handleAccept, (), (final));
+    MOCK_METHOD(void, handleReject, (), (final));
 };
 
 class IUserPortMock : public IUserPort
@@ -23,6 +25,11 @@ public:
     MOCK_METHOD(void, showNotConnected, (), (final));
     MOCK_METHOD(void, showConnecting, (), (final));
     MOCK_METHOD(void, showConnected, (), (final));
-};
 
+    MOCK_METHOD(void, showCallRequest, (common::PhoneNumber from), (final));
+    MOCK_METHOD(void, showCallAccepted, (common::PhoneNumber from), (final));
+    MOCK_METHOD(void, showCallDropped, (common::PhoneNumber from), (final));
+    MOCK_METHOD(void, showIncomingText, (common::PhoneNumber from, const std::string& text), (final));
+
+};
 }

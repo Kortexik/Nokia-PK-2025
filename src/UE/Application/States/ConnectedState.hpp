@@ -10,6 +10,21 @@ class ConnectedState : public BaseState
 public:
     ConnectedState(Context& context);
     void handleDisconnected() final;
+
+    void handleCallRequest(common::PhoneNumber from) override {
+        callingNumber = from;
+        context.user.showCallRequest(from);
+        context.timer.startTimer(std::chrono::milliseconds(30000));
+    }
+    void handleCallAccepted(common::PhoneNumber from) override;
+    void handleCallDropped(common::PhoneNumber from) override;
+    void handleCallTalk(common::PhoneNumber from, std::string text) override;
+    
+    void handleTimeout() override;
+    void handleAcceptCall();
+    void handleRejectCall();
+private:
+    common::PhoneNumber callingNumber{};
 };
 
 }

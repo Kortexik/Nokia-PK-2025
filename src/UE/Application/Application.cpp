@@ -41,9 +41,38 @@ void Application::handleAttachReject()
     context.state->handleAttachReject();
 }
 
-    void Application::handleDisconnected() {
-        context.state->handleDisconnected();
-    }
+void Application::handleDisconnected()
+{
+    context.state->handleDisconnected();
+}
 
+void Application::handleCallRequest(common::PhoneNumber from)
+{
+    context.state->handleCallRequest(from);
+}
+
+void Application::handleCallAccepted(common::PhoneNumber from)
+{
+    context.state->handleCallAccepted(from);
+}
+
+void Application::handleCallDropped(common::PhoneNumber from)
+{
+    context.state->handleCallDropped(from);    
+}
+void Application::handleCallTalk(common::PhoneNumber from, std::string text)
+{
+    context.state->handleCallTalk(from, text);
+}
+
+void Application::handleAccept()
+{
+    context.state->handleAccept();
+}
+
+void Application::handleReject()
+{
+    context.state->handleReject();
+}
 
 }
