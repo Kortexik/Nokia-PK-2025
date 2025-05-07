@@ -18,6 +18,3 @@ src/cmake-build*
 *.o
 *_autogen
 .cache
-src/googletest/CMakeLists.txt
-src/googletest/googlemock/CMakeLists.txt
-src/googletest/googletest/CMakeLists.txt

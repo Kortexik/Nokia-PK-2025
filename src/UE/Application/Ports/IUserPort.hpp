@@ -27,7 +27,6 @@ public:
     virtual void showCallRequest(common::PhoneNumber from) = 0;
     virtual void showCallAccepted(common::PhoneNumber from) = 0;
     virtual void showCallDropped(common::PhoneNumber from) = 0;
-    virtual void showIncomingText(common::PhoneNumber from, const std::string& text) = 0;
 
     virtual void showDialing() = 0;
 };

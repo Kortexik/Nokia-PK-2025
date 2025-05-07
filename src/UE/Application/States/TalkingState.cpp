@@ -16,26 +16,32 @@ void TalkingState::handleCallRequest(common::PhoneNumber from)
     context.bts.sendCallDrop(from);
 }
 
-void TalkingState::handleCallAccepted(common::PhoneNumber from)
-{
-    
-}
-
 void TalkingState::handleCallDropped(common::PhoneNumber from)
 {
     context.user.showCallDropped(from);
     context.setState<ConnectedState>();
 }
 
-void TalkingState::handleCallTalk(common::PhoneNumber from, std::string text)
-{
-    context.user.showIncomingText(from, text);
-}
-
 void TalkingState::handleTimeout()
 {
     context.bts.sendCallDrop(callingNumber);
+    context.user.showCallDropped(callingNumber);
     context.setState<ConnectedState>();
-} 
+}
+void TalkingState::handleAccept()
+{
+    logger.logDebug("Accept pressed during call");
+}
 
+void TalkingState::handleReject()
+{
+    logger.logDebug("Reject pressed - ending call");
+    context.bts.sendCallDrop(callingNumber);
+    context.setState<ConnectedState>();
+}
+
+void TalkingState::handleDial(common::PhoneNumber to)
+{
+    logger.logDebug("Dial pressed during call - ignoring");
+}
 }

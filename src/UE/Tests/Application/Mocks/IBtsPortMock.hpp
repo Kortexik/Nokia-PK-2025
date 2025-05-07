@@ -19,7 +19,7 @@ public:
     MOCK_METHOD(void, handleCallRequest, (common::PhoneNumber), (final));
     MOCK_METHOD(void, handleCallAccepted, (common::PhoneNumber), (final));
     MOCK_METHOD(void, handleCallDropped, (common::PhoneNumber), (final));
-    MOCK_METHOD(void, handleCallTalk, (common::PhoneNumber, std::string), (final));
+    MOCK_METHOD(void, handleCallTalk, (common::PhoneNumber, const std::string& text), (final));
 
 
 };

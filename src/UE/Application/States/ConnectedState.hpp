@@ -2,7 +2,7 @@
 
 #include "BaseState.hpp"
 #include "Messages/PhoneNumber.hpp"
-
+#include "TalkingState.hpp"
 namespace ue
 {
 
@@ -12,21 +12,22 @@ public:
     ConnectedState(Context& context);
     void handleDisconnected() final;
 
-    void handleCallRequest(common::PhoneNumber from) override {
-        callingNumber = from;
-        context.user.showCallRequest(from);
-        context.timer.startTimer(std::chrono::milliseconds(30000));
-    }
-    void handleCallAccepted(common::PhoneNumber from) override;
-    void handleCallDropped(common::PhoneNumber from) override;
-    void handleCallTalk(common::PhoneNumber from, std::string text) override;
-    
+    void handleCallRequest(common::PhoneNumber from) override;
+    void handleAccept() override;
+    void handleReject() override;
+
     void handleTimeout() override;
-    void handleAcceptCall();
-    void handleRejectCall();
 
     void handleMenuSelection(const std::string& selection) override;
+
     void handleDial(common::PhoneNumber to) override;
+
+    void handleCallAccepted(common::PhoneNumber from) override {
+        context.timer.stopTimer();
+        if (from == callingNumber) {
+            context.setState<TalkingState>(from);
+        }
+    }
 private:
     common::PhoneNumber callingNumber{};
 };

@@ -19,7 +19,7 @@ public:
     virtual void handleCallRequest(common::PhoneNumber from) = 0;
     virtual void handleCallAccepted(common:: PhoneNumber from) = 0;
     virtual void handleCallDropped(common:: PhoneNumber from) = 0;
-    virtual void handleCallTalk(common:: PhoneNumber from, std::string text) = 0;
+    virtual void handleCallTalk(common:: PhoneNumber from, const std::string& text) = 0;
 };
 
 class IBtsPort

@@ -26,21 +26,16 @@ public:
     void handleDisconnected() override;
 
     virtual void handleCallRequest(common::PhoneNumber from)  override {
+      logger.logDebug("Dropping a call in states that is not connected state");
       context.bts.sendCallDrop(from);
     }
+
     virtual void handleCallAccepted(common::PhoneNumber) {}
     virtual void handleCallDropped(common::PhoneNumber) {}
-    virtual void handleCallTalk(common::PhoneNumber, std::string) {}
-    
-    virtual void handleAccept()  override{
-        logger.logDebug("Call accept ignored");
-    }
 
-    virtual void handleReject() override{
-        logger.logDebug("Call Reject ignored");
-    }
-    virtual void handleDial(common::PhoneNumber to) {
-        logger.logDebug("Dialing ignored");
+    virtual void handleCallTalk(common::PhoneNumber from, const std::string& text) override
+    {
+        logger.logDebug("Call talk from: ", from, " text: ", text);
     }
 
     virtual void handleMenuSelection(const std::string& selection) {}
