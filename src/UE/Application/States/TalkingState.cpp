@@ -37,6 +37,7 @@ void TalkingState::handleReject()
 {
     logger.logDebug("Reject pressed - ending call");
     context.bts.sendCallDrop(callingNumber);
+    context.user.showCallDropped(callingNumber);
     context.setState<ConnectedState>();
 }
 

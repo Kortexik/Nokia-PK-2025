@@ -21,6 +21,7 @@ public:
     void handleMenuSelection(const std::string& selection) override;
 
     void handleDial(common::PhoneNumber to) override;
+    void handleCallDropped(common::PhoneNumber from) override;
 
     void handleCallAccepted(common::PhoneNumber from) override {
         context.timer.stopTimer();

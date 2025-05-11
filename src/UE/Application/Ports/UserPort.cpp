@@ -3,6 +3,7 @@
 #include "UeGui/ITextMode.hpp"
 #include "UeGui/IDialMode.hpp"
 #include "UeGui/ICallMode.hpp"
+#include <chrono>
 
 namespace ue
 {
@@ -76,9 +77,6 @@ void UserPort::showCallRequest(common::PhoneNumber from)
     auto& alertMode = gui.setAlertMode();
     alertMode.setText("Incoming call from: " + std::to_string(from.value));
     
-    gui.setAcceptCallback(nullptr);
-    gui.setRejectCallback(nullptr);
-    
     gui.setAcceptCallback([this]() {
         if (handler) handler->handleAccept();
     });
@@ -94,9 +92,8 @@ void UserPort::showCallAccepted(common::PhoneNumber from)
     callMode.clearIncomingText();
     callMode.clearOutgoingText();
 
-    gui.setAcceptCallback([this, &callMode, from]() {
+    gui.setAcceptCallback([this, &callMode]() {
         auto outgoingText = callMode.getOutgoingText();
-
     });
 
     gui.setRejectCallback([this]() {
@@ -112,8 +109,8 @@ void UserPort::showCallAccepted(common::PhoneNumber from)
 void UserPort::showCallDropped(common::PhoneNumber from)
 {
     auto& alertMode = gui.setAlertMode();
-    alertMode.setText("Call with " + std::to_string(from.value) + " ended");
-    
+    alertMode.setText(std::to_string(from.value) + " is busy.");
+
     gui.setAcceptCallback([this]() {
         showConnected();
     });

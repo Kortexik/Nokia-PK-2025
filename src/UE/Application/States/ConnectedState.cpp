@@ -70,4 +70,10 @@ void ConnectedState::handleCallRequest(common::PhoneNumber from)
             context.bts.sendCallDrop(from);
         }
     }
+
+void ConnectedState::handleCallDropped(common::PhoneNumber from) {
+    logger.logDebug("Call rejected by: ", from);
+    context.user.showCallDropped(from);
+    callingNumber = common::PhoneNumber{};
+}
 }
