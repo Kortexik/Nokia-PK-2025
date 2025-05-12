@@ -39,4 +39,9 @@ void UserPort::showConnected()
     menu.addSelectionListItem("View SMS", "");
 }
 
+void UserPort::showSms()
+{
+    gui.showNewSms(true);
+}
+
 }
