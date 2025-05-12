@@ -1,5 +1,8 @@
 #pragma once
 
+#include <atomic>
+#include <thread>
+
 #include "ITimerPort.hpp"
 #include "Logger/PrefixedLogger.hpp"
 
@@ -21,6 +24,10 @@ public:
 private:
     common::PrefixedLogger logger;
     ITimerEventsHandler* handler = nullptr;
+
+    std::chrono::steady_clock::time_point startTime;
+    std::atomic<bool> timerIsRunning = false;
+    std::thread timerThread;
 };
 
 }
