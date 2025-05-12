@@ -9,9 +9,11 @@ ConnectedState::ConnectedState(Context &context)
     : BaseState(context, "ConnectedState")
 {
     context.user.showConnected();
+
 }
 void ConnectedState::handleDisconnected() {
     context.setState<NotConnectedState>();
+
 }
 
 }
