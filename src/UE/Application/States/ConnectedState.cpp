@@ -14,6 +14,14 @@ ConnectedState::ConnectedState(Context &context)
 void ConnectedState::handleDisconnected() {
     context.setState<NotConnectedState>();
 
+void ConnectedState::handleSmsReceived(common::PhoneNumber from, const std::string& message)
+{
+    int index = context.smsDb.addSms(from, message);
+    logger.logInfo("Received SMS from:", from, "with message:", message);
+    context.user.showSms();
+}
+
+
 }
 
 void ConnectedState::handleTimeout()

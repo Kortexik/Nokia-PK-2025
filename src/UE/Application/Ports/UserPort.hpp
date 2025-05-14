@@ -18,6 +18,7 @@ public:
     void showNotConnected() override;
     void showConnecting() override;
     void showConnected() override;
+    void showSms() override;
 
     void showCallRequest(common::PhoneNumber from) override;
     void showCallAccepted(common::PhoneNumber from) override;

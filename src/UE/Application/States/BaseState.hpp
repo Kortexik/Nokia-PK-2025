@@ -24,6 +24,7 @@ public:
     void handleAttachAccept() override;
     void handleAttachReject() override;
     void handleDisconnected() override;
+    void handleSmsReceived(common::PhoneNumber fromNumber, std::string message) override;
 
     virtual void handleCallRequest(common::PhoneNumber from)  override {
       logger.logDebug("Dropping a call in states that is not connected state");

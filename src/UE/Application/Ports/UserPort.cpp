@@ -134,4 +134,9 @@ void UserPort::showDialing()
     });
 }
 
+void UserPort::showSms()
+{
+    gui.showNewSms(true);
+}
+
 }

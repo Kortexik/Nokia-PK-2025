@@ -52,6 +52,11 @@ void BtsPort::handleMessage(BinaryMessage msg)
             break;
         }
 
+        case common::MessageId::Sms: {
+            std::string message = reader.readRemainingText();
+            handler->handleSmsReceived(from, message);
+            break;
+        }
         case common::MessageId::CallRequest:
         {
           handler->handleCallRequest(from);

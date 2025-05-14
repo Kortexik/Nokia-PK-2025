@@ -24,11 +24,16 @@ public:
     virtual void showConnecting() = 0;
     virtual void showConnected() = 0;
 
+    virtual void showSmsReceived() = 0;
+    virtual void showSms() = 0;
+
+
     virtual void showCallRequest(common::PhoneNumber from) = 0;
     virtual void showCallAccepted(common::PhoneNumber from) = 0;
     virtual void showCallDropped(common::PhoneNumber from) = 0;
 
     virtual void showDialing() = 0;
+
 };
 
 }

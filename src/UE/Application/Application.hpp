@@ -30,6 +30,8 @@ public:
     void handleAttachReject() override;
     void handleDisconnected() override;
 
+    void handleSmsReceived(common::PhoneNumber from, const std::string& message) override;
+
     void handleCallRequest(common::PhoneNumber from) override;
     void handleCallAccepted(common::PhoneNumber from) override;
     void handleCallDropped(common::PhoneNumber from) override;

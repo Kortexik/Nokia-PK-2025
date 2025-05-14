@@ -12,6 +12,8 @@ public:
     ConnectedState(Context& context);
     void handleDisconnected() final;
 
+    void handleSmsReceived(common::PhoneNumber from, const std::string& message) override;
+
     void handleCallRequest(common::PhoneNumber from) override;
     void handleAccept() override;
     void handleReject() override;
@@ -31,6 +33,7 @@ public:
     }
 private:
     common::PhoneNumber callingNumber{};
+
 };
 
 }
