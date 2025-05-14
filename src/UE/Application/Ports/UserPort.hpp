@@ -20,6 +20,12 @@ public:
     void showConnected() override;
     void showSms() override;
 
+    void showCallRequest(common::PhoneNumber from) override;
+    void showCallAccepted(common::PhoneNumber from) override;
+    void showCallDropped(common::PhoneNumber from) override;
+
+    void showDialing() override;
+
 private:
     common::PrefixedLogger logger;
     IUeGui& gui;

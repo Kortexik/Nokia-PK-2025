@@ -44,18 +44,41 @@ void BtsPort::handleMessage(BinaryMessage msg)
         }
         case common::MessageId::AttachResponse:
         {
-            bool accept = reader.readNumber<std::uint8_t>() != 0u;
+            bool accept = reader.readNumber<std::uint8_t>() != 0U;
             if (accept)
                 handler->handleAttachAccept();
             else
                 handler->handleAttachReject();
             break;
         }
+
         case common::MessageId::Sms: {
             std::string message = reader.readRemainingText();
             handler->handleSmsReceived(from, message);
             break;
         }
+        case common::MessageId::CallRequest:
+        {
+          handler->handleCallRequest(from);
+          break;
+        }
+        case common::MessageId::CallAccepted:
+        {
+          handler->handleCallAccepted(from);
+          break;
+        }
+        case common::MessageId::CallDropped:
+        {
+          handler->handleCallDropped(from);
+          break;
+        }
+        case common::MessageId::CallTalk:
+        {
+          std::string text = reader.readRemainingText();
+          handler->handleCallTalk(from, text);
+          break;
+        }
+
         default:
             logger.logError("unknow message: ", msgId, ", from: ", from);
 
@@ -79,9 +102,29 @@ void BtsPort::sendAttachRequest(common::BtsId btsId)
 
 
 }
-    void BtsPort::handleDisconnected() const {
-        handler->handleDisconnected();
-    }
-
-
+void BtsPort::handleDisconnected() const {
+    handler->handleDisconnected();
 }
+
+void BtsPort::sendCallAccepted(common::PhoneNumber to) {
+  logger.logDebug("sendCallAccept to: ", to);
+  common::OutgoingMessage msg(common::MessageId::CallAccepted, phoneNumber, to);
+  transport.sendMessage(msg.getMessage());
+}
+
+void BtsPort::sendCallDrop(common::PhoneNumber to) {
+  logger.logDebug("sendCallDrop to: ", to);
+  common::OutgoingMessage msg(common::MessageId::CallDropped, phoneNumber, to);
+  transport.sendMessage(msg.getMessage());
+}
+
+
+void BtsPort::sendCallRequest(common::PhoneNumber to)
+{
+    logger.logDebug("sendCallRequest to: ", to);
+    common::OutgoingMessage msg(common::MessageId::CallRequest, phoneNumber, to);
+    transport.sendMessage(msg.getMessage());
+}
+}
+
+

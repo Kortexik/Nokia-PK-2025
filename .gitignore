@@ -17,4 +17,4 @@ src/cmake-build*
 *.a
 *.o
 *_autogen
-
+.cache
