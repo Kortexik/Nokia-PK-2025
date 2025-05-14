@@ -30,6 +30,14 @@ public:
     void handleAttachReject() override;
     void handleDisconnected() override;
 
+    void handleCallRequest(common::PhoneNumber from) override;
+    void handleCallAccepted(common::PhoneNumber from) override;
+    void handleCallDropped(common::PhoneNumber from) override;
+    void handleCallTalk(common::PhoneNumber from, const std::string& text) override;
+    void handleAccept() override;
+    void handleReject() override;
+    void handleDial(common::PhoneNumber to) override;
+
 private:
     Context context;
     common::PrefixedLogger logger;

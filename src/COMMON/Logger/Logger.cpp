@@ -9,7 +9,7 @@ namespace common
 Logger::Logger(std::ostream& logfile)
     : Logger(
         {
-            {"[DEBUG]", {&logfile}},
+            {"[DEBUG]", {&std::cout, &logfile}},
             {"", {&std::cout, &logfile}},
             {"[ERROR]", {&std::cerr, &logfile}}
         })
