@@ -25,11 +25,18 @@ public:
 
     void showDialing() override;
 
+    void alertUser(std::string msg) override;
+
+    void setCallMode(common::PhoneNumber partnerPhoneNumber) override;
+    void waitingForCallRespond(common::PhoneNumber to) override;
+    void newCallMessage(const std::string &text) override;
+
 private:
     common::PrefixedLogger logger;
     IUeGui& gui;
     common::PhoneNumber phoneNumber;
     IUserEventsHandler* handler = nullptr;
+    IUeGui::ICallMode* callMode= nullptr;
 };
 
 }

@@ -38,6 +38,7 @@ void UserPort::showConnecting()
 
 void UserPort::showConnected()
 {
+    callMode = nullptr;
     IUeGui::IListViewMode& menu = gui.setListViewMode();
     menu.clearSelectionList();
     menu.addSelectionListItem("Compose SMS", "");
@@ -132,6 +133,38 @@ void UserPort::showDialing()
             handler->handleReject();
         }
     });
+}
+
+void UserPort::alertUser(std::string msg) {
+
+    auto &alert=gui.setAlertMode();
+    alert.setText((msg));
+    gui.setAcceptCallback([=](){showConnected();});
+    gui.setRejectCallback([=](){showConnected();});
+}
+
+void UserPort::setCallMode(common::PhoneNumber partnerPhoneNumber) {
+    callMode=&gui.setCallMode();
+
+    gui.setAcceptCallback([=](){
+        auto text=callMode->getOutgoingText();
+        if(!(text.empty())){
+            logger.logInfo("setCallMode  " + to_string(partnerPhoneNumber));
+            handler->handleSendCallTalk(partnerPhoneNumber,text);
+            callMode->clearOutgoingText();
+        }
+    });
+    gui.setRejectCallback([=](){handler->handleSendCallDropped(partnerPhoneNumber);});
+}
+
+void UserPort::waitingForCallRespond(common::PhoneNumber to) {
+    auto &alert=gui.setAlertMode();
+    alert.setText("Calling " + std::to_string(to.value) + "...");
+}
+
+void UserPort::newCallMessage(const std::string &text) {
+    callMode->clearIncomingText();
+    callMode->appendIncomingText(text);
 }
 
 }

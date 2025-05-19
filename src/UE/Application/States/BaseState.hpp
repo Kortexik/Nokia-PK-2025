@@ -33,10 +33,9 @@ public:
     virtual void handleCallAccepted(common::PhoneNumber) {}
     virtual void handleCallDropped(common::PhoneNumber) {}
 
-    virtual void handleCallTalk(common::PhoneNumber from, const std::string& text) override
-    {
-        logger.logDebug("Call talk from: ", from, " text: ", text);
-    }
+    void handleSendCallDropped(common::PhoneNumber from) override;
+    void handleReceivedCallTalk(const std::string &text) override;
+    void handleSendCallTalk(common::PhoneNumber to, const std::string &msg) override;
 
     virtual void handleMenuSelection(const std::string& selection) {}
 

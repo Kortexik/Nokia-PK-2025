@@ -29,6 +29,7 @@ public:
             context.setState<TalkingState>(from);
         }
     }
+    void handleSendCallDropped(common::PhoneNumber from) final;
 private:
     common::PhoneNumber callingNumber{};
 };

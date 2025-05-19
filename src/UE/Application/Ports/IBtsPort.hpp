@@ -2,6 +2,7 @@
 
 #include "Messages/BtsId.hpp"
 #include "Messages/PhoneNumber.hpp"
+#include "Messages/MessageId.hpp"
 
 namespace ue
 {
@@ -19,7 +20,7 @@ public:
     virtual void handleCallRequest(common::PhoneNumber from) = 0;
     virtual void handleCallAccepted(common:: PhoneNumber from) = 0;
     virtual void handleCallDropped(common:: PhoneNumber from) = 0;
-    virtual void handleCallTalk(common:: PhoneNumber from, const std::string& text) = 0;
+    virtual void handleReceivedCallTalk(const std::string &text) = 0;
 };
 
 class IBtsPort
@@ -30,6 +31,7 @@ public:
     virtual void sendAttachRequest(common::BtsId) = 0;
     virtual void sendCallAccepted(common::PhoneNumber to) = 0;
     virtual void sendCallDrop(common::PhoneNumber to) = 0;
+    virtual void sendCallTalk(common::PhoneNumber to, const std::string &text) = 0;
     virtual void sendCallRequest(common::PhoneNumber to) = 0;
 };
 
