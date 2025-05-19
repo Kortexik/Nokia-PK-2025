@@ -29,6 +29,7 @@ public:
     virtual void showCallRequest(common::PhoneNumber from) = 0;
     virtual void showCallAccepted(common::PhoneNumber from) = 0;
     virtual void showCallDropped(common::PhoneNumber from) = 0;
+    virtual void showCallDroppedAfterTalk(common::PhoneNumber from) = 0;
 
     virtual void showDialing() = 0;
 

@@ -22,6 +22,7 @@ public:
     void showCallRequest(common::PhoneNumber from) override;
     void showCallAccepted(common::PhoneNumber from) override;
     void showCallDropped(common::PhoneNumber from) override;
+    void showCallDroppedAfterTalk(common::PhoneNumber from) override;
 
     void showDialing() override;
 

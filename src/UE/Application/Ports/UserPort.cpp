@@ -117,6 +117,16 @@ void UserPort::showCallDropped(common::PhoneNumber from)
     });
 }
 
+void UserPort::showCallDroppedAfterTalk(common::PhoneNumber from)
+{
+    auto& alertMode = gui.setAlertMode();
+    alertMode.setText("Call dropped by " + std::to_string(from.value));
+
+    gui.setAcceptCallback([this]() {
+        showConnected();
+    });
+}
+
 void UserPort::showDialing()
 {
     auto& dialMode = gui.setDialMode();
@@ -145,6 +155,9 @@ void UserPort::alertUser(std::string msg) {
 
 void UserPort::setCallMode(common::PhoneNumber partnerPhoneNumber) {
     callMode=&gui.setCallMode();
+
+    callMode->clearIncomingText();
+    callMode->clearOutgoingText();
 
     gui.setAcceptCallback([=](){
         auto text=callMode->getOutgoingText();

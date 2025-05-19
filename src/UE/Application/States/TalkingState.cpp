@@ -19,8 +19,9 @@ void TalkingState::handleCallRequest(common::PhoneNumber from)
 
 void TalkingState::handleCallDropped(common::PhoneNumber from)
 {
-    context.user.showCallDropped(from);
+    logger.logDebug("Call dropped by: ", from);
     context.setState<ConnectedState>();
+    context.user.showCallDroppedAfterTalk(from);
 }
 
 void TalkingState::handleTimeout()
@@ -52,7 +53,6 @@ void TalkingState::handleSendCallDropped(common::PhoneNumber from)
     context.timer.stopTimer();
     context.bts.sendCallDrop(from);
     context.setState<ConnectedState>();
-    context.user.alertUser("Call dropped by " + to_string(from));
 }
 
 void TalkingState::handleSendCallTalk(common::PhoneNumber to, const std::string &msg)

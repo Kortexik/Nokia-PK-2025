@@ -94,9 +94,8 @@ void BtsPort::sendAttachRequest(common::BtsId btsId)
                                 common::PhoneNumber{}};
     msg.writeBtsId(btsId);
     transport.sendMessage(msg.getMessage());
-
-
 }
+
 void BtsPort::handleDisconnected() const {
     handler->handleDisconnected();
 }
@@ -113,7 +112,6 @@ void BtsPort::sendCallDrop(common::PhoneNumber to) {
   transport.sendMessage(msg.getMessage());
 }
 
-
 void BtsPort::sendCallRequest(common::PhoneNumber to)
 {
     logger.logDebug("sendCallRequest to: ", to);
@@ -128,5 +126,3 @@ void BtsPort::sendCallTalk(common::PhoneNumber to, const std::string &text) {
     transport.sendMessage(msg.getMessage());
 }
 }
-
-
