@@ -8,6 +8,7 @@ TalkingState::TalkingState(Context& context, common::PhoneNumber callingNumber)
     : BaseState(context, "TalkingState")
     {
         context.user.setCallMode(callingNumber);
+        this->callingNumber = callingNumber;
         using namespace std::chrono_literals;
         context.timer.startTimer(120s);
     }
