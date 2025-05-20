@@ -54,10 +54,11 @@ void ConnectedState::handleMenuSelection(const std::string& selection)
 
 void ConnectedState::handleDial(common::PhoneNumber to)
 {
-    logger.logDebug("Dialing", to);
+    logger.logDebug("Dialing ", to);
     callingNumber = to;
     context.user.showDialing();
     context.bts.sendCallRequest(to);
+    context.user.waitingForCallRespond(to);
     context.timer.startTimer(std::chrono::milliseconds(30000));
 }
 
@@ -77,5 +78,11 @@ void ConnectedState::handleCallDropped(common::PhoneNumber from) {
     logger.logDebug("Call rejected by: ", from);
     context.user.showCallDropped(from);
     callingNumber = common::PhoneNumber{};
+}
+
+void ConnectedState::handleSendCallDropped(common::PhoneNumber from){
+    context.timer.stopTimer();
+    context.bts.sendCallDrop(from);
+    context.user.showConnected();
 }
 }

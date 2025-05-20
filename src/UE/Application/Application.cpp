@@ -73,11 +73,19 @@ void Application::handleReject()
     context.state->handleReject();
 }
 
-void Application::handleCallTalk(common::PhoneNumber from, const std::string& text)
+void Application::handleReceivedCallTalk(const std::string& text)
 {
-    context.state->handleCallTalk(from, text);
+    context.state->handleReceivedCallTalk(text);
 }
 
+void Application::handleSendCallTalk(common::PhoneNumber to, const std::string &msg)
+{
+    context.state->handleSendCallTalk(to, msg);
+}
+
+void Application::handleSendCallDropped(common::PhoneNumber from){
+    context.state->handleSendCallDropped(from);
+}
 
 void Application::handleDial(common::PhoneNumber to)
 {

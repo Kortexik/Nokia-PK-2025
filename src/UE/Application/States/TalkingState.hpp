@@ -17,6 +17,10 @@ public:
     void handleCallRequest(common::PhoneNumber from) override;
     void handleCallDropped(common::PhoneNumber from) override;
     void handleTimeout() override;
+
+    void handleSendCallTalk(common::PhoneNumber to, const std::string &msg) override;
+    void handleReceivedCallTalk(const std::string &text) override;
+    void handleSendCallDropped(common::PhoneNumber from) final;
 private:
     common::PhoneNumber callingNumber;
 };

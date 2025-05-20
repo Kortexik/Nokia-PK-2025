@@ -5,11 +5,12 @@ namespace ue
 {
 
 TalkingState::TalkingState(Context& context, common::PhoneNumber callingNumber)
-    : BaseState(context, "TalkingState"),
-      callingNumber(callingNumber)
-{
-    context.user.showCallAccepted(callingNumber);
-}
+    : BaseState(context, "TalkingState")
+    {
+        context.user.setCallMode(callingNumber);
+        using namespace std::chrono_literals;
+        context.timer.startTimer(120s);
+    }
 
 void TalkingState::handleCallRequest(common::PhoneNumber from)
 {
@@ -18,8 +19,9 @@ void TalkingState::handleCallRequest(common::PhoneNumber from)
 
 void TalkingState::handleCallDropped(common::PhoneNumber from)
 {
-    context.user.showCallDropped(from);
+    logger.logDebug("Call dropped by: ", from);
     context.setState<ConnectedState>();
+    context.user.showCallDroppedAfterTalk(from);
 }
 
 void TalkingState::handleTimeout()
@@ -44,5 +46,28 @@ void TalkingState::handleReject()
 void TalkingState::handleDial(common::PhoneNumber to)
 {
     logger.logDebug("Dial pressed during call - ignoring");
+}
+
+void TalkingState::handleSendCallDropped(common::PhoneNumber from)
+{
+    context.timer.stopTimer();
+    context.bts.sendCallDrop(from);
+    context.setState<ConnectedState>();
+}
+
+void TalkingState::handleSendCallTalk(common::PhoneNumber to, const std::string &msg)
+{
+    context.timer.stopTimer();
+    context.bts.sendCallTalk(to,msg);
+    using namespace std::chrono_literals;
+    context.timer.startTimer(120s);
+}
+
+void TalkingState::handleReceivedCallTalk(const std::string &text)
+{
+    context.timer.stopTimer();
+    context.user.newCallMessage(text);
+    using namespace std::chrono_literals;
+    context.timer.startTimer(120s);
 }
 }
