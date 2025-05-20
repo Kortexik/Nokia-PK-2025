@@ -30,11 +30,8 @@ public:
     virtual void showCallAccepted(common::PhoneNumber from) = 0;
     virtual void showCallDropped(common::PhoneNumber from) = 0;
     virtual void showCallDroppedAfterTalk(common::PhoneNumber from) = 0;
-
     virtual void showDialing() = 0;
-
     virtual void alertUser(std::string msg) = 0;
-
     virtual void setCallMode(common::PhoneNumber partnerPhoneNumber) = 0;
     virtual void newCallMessage(const std::string &text) = 0;
     virtual void waitingForCallRespond(common::PhoneNumber to) = 0;
