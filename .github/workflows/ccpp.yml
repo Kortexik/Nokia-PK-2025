@@ -47,7 +47,7 @@ jobs:
       run: make UeApplicationUT
 
     - name: run UEApplication ut
-      run: ./COMMON/Tests/COMMON_UT
+      run: ./UE/Tests/Application/UeApplicationUT
       
     - name: Next Steps
       run: echo "Add your next steps here"

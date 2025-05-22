@@ -5,7 +5,7 @@ namespace ue
 {
 
 TalkingState::TalkingState(Context& context, common::PhoneNumber callingNumber)
-    : BaseState(context, "TalkingState")
+    : BaseState(context, "TalkingState"),callingNumber(callingNumber)
     {
         context.user.setCallMode(callingNumber);
         using namespace std::chrono_literals;
