@@ -14,7 +14,8 @@ class SmsDb
 public:
     SmsDb() = default;
 
-    int addSms(common::PhoneNumber from, const std::string& text);
+    int addRecievedSms(common::PhoneNumber source, const std::string& text);
+    int addSentSms(common::PhoneNumber to, const std::string& text);
     const std::vector<Sms>& viewAllSms() const;
 };
 

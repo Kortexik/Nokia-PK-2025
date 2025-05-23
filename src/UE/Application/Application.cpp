@@ -1,5 +1,6 @@
 #include "Application.hpp"
 #include "States/NotConnectedState.hpp"
+#include "States/ConnectedState.hpp"
 
 namespace ue
 {

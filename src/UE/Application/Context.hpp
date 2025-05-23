@@ -15,7 +15,8 @@ struct Context
     IUserPort& user;
     ITimerPort& timer;
     SmsDb smsDb;
-    std::unique_ptr<IEventsHandler> state{};
+    std::unique_ptr<IEventsHandler> state;
+    common::PhoneNumber phoneNumber;
 
     template <typename State, typename ...Arg>
     void setState(Arg&& ...arg)

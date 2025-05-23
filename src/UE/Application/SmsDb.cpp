@@ -1,12 +1,12 @@
 #include "SmsDb.hpp"
+#include "Sms.hpp"
 
 namespace ue
 {
 
-int SmsDb::addSms(common::PhoneNumber fromNumber, const std::string& message)
+int SmsDb::addRecievedSms(common::PhoneNumber sourceNumber, const std::string& message)
 {
-    Sms newSms(fromNumber, message, false);
-    messages.push_back(newSms);
+    messages.push_back(Sms(sourceNumber, message, Sms::Status::UNREAD));
     return messages.size() - 1;
 }
 

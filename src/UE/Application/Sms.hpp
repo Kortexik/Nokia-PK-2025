@@ -6,13 +6,23 @@
 namespace ue
 {
 
-struct Sms
+class Sms
 {
-    common::PhoneNumber from;
-    std::string text;
-    bool isRead;
+public:
+    enum class Status : uint8_t
+    {
+        READ,
+        UNREAD,
+        SENT,
+        FAILED
+    };
 
-    Sms(common::PhoneNumber from, const std::string& text, bool isRead = false);
+    Sms(common::PhoneNumber phoneNumber, const std::string& text, Status status) : sourceNumber(phoneNumber), text(text), status(status) {}
+
+private:
+    common::PhoneNumber sourceNumber;
+    std::string text;
+    Status status;
 };
 
 } // namespace ue
