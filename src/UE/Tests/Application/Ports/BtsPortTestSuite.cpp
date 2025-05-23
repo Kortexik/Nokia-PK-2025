@@ -27,14 +27,15 @@ protected:
 
     BtsPortTestSuite()
     {
+        EXPECT_CALL(transportMock, registerDisconnectedCallback(_));
         EXPECT_CALL(transportMock, registerMessageCallback(_))
-                .WillOnce(SaveArg<0>(&messageCallback));
+            .WillOnce(SaveArg<0>(&messageCallback));
         objectUnderTest.start(handlerMock);
     }
     ~BtsPortTestSuite()
     {
-
         EXPECT_CALL(transportMock, registerMessageCallback(IsNull()));
+        EXPECT_CALL(transportMock, registerDisconnectedCallback(IsNull()));
         objectUnderTest.stop();
     }
 };

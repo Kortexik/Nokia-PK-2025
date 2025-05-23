@@ -53,7 +53,9 @@ TEST_F(UserPortTestSuite, shallShowMenuOnConnected)
 {
     EXPECT_CALL(guiMock, setListViewMode()).WillOnce(ReturnRef(listViewModeMock));
     EXPECT_CALL(listViewModeMock, clearSelectionList());
-    EXPECT_CALL(listViewModeMock, addSelectionListItem(_, _)).Times(AtLeast(1));
+    EXPECT_CALL(listViewModeMock, addSelectionListItem(_, _)).Times(3);
+    EXPECT_CALL(guiMock, setAcceptCallback(_));
+
     objectUnderTest.showConnected();
 }
 

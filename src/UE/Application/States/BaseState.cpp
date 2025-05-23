@@ -42,5 +42,15 @@ void BaseState::handleSmsReceived(common::PhoneNumber fromNumber, std::string me
 {
     logger.logError("Unexpected: handleSmsReceived from: ", fromNumber, " text: ", message);
 }
+void BaseState::handleSendCallDropped(common::PhoneNumber from) {
+    logger.logError("Unexpected: handleSendCallDropped");
+}
 
+void BaseState::handleSendCallTalk(common::PhoneNumber to, const std::string &msg) {
+    logger.logError("Unexpected : handleSendCallTalk ");
+}
+
+void BaseState::handleReceivedCallTalk(const std::string &text) {
+    logger.logError("Unexpected : handleReceivedCallTalk ");
+}
 }
