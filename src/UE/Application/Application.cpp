@@ -1,5 +1,6 @@
 #include "Application.hpp"
 #include "States/NotConnectedState.hpp"
+#include "States/ConnectedState.hpp"
 
 namespace ue
 {
@@ -45,9 +46,57 @@ void Application::handleDisconnected() {
     context.state->handleDisconnected();
 }
 
-void Application::handleSendMessage(common::PhoneNumber dest, const std::string& message)
+void Application::handleSmsReceived(common::PhoneNumber from, const std::string& message)
 {
-    context.state->handleSendMessage(dest, message);
+    context.state->handleSmsReceived(from, message);
+}
+void Application::handleCallRequest(common::PhoneNumber from)
+{
+    context.state->handleCallRequest(from);
+}
+
+void Application::handleCallAccepted(common::PhoneNumber from)
+{
+    context.state->handleCallAccepted(from);
+}
+
+void Application::handleCallDropped(common::PhoneNumber from)
+{
+    context.state->handleCallDropped(from);
+}
+
+void Application::handleAccept()
+{
+    context.state->handleAccept();
+}
+
+void Application::handleReject()
+{
+    context.state->handleReject();
+}
+
+void Application::handleMenuSelection(unsigned int index)
+{
+    context.state->handleMenuSelection(index);
+}
+
+void Application::handleReceivedCallTalk(const std::string& text)
+{
+    context.state->handleReceivedCallTalk(text);
+}
+
+void Application::handleSendCallTalk(common::PhoneNumber to, const std::string &msg)
+{
+    context.state->handleSendCallTalk(to, msg);
+}
+
+void Application::handleSendCallDropped(common::PhoneNumber from){
+    context.state->handleSendCallDropped(from);
+}
+
+void Application::handleDial(common::PhoneNumber to)
+{
+    context.state->handleDial(to);
 }
 
 }

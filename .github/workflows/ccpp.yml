@@ -16,7 +16,7 @@ jobs:
         working-directory: src
         
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Clean Qt directory
       run: |
@@ -25,7 +25,7 @@ jobs:
         fi
         
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
     - name: cmake
       run: cmake .
     - name: make all targets
@@ -47,7 +47,7 @@ jobs:
       run: make UeApplicationUT
 
     - name: run UEApplication ut
-      run: ./COMMON/Tests/COMMON_UT
+      run: ./UE/Tests/Application/UeApplicationUT
       
     - name: Next Steps
       run: echo "Add your next steps here"

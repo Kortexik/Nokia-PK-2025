@@ -44,15 +44,44 @@ void BtsPort::handleMessage(BinaryMessage msg)
         }
         case common::MessageId::AttachResponse:
         {
-            bool accept = reader.readNumber<std::uint8_t>() != 0u;
+            bool accept = reader.readNumber<std::uint8_t>() != 0U;
             if (accept)
                 handler->handleAttachAccept();
             else
                 handler->handleAttachReject();
             break;
         }
+        case common::MessageId::Sms:
+        {
+            std::string message = reader.readRemainingText();
+            handler->handleSmsReceived(from, message);
+            break;
+        }
+
+        case common::MessageId::CallRequest:
+        {
+          handler->handleCallRequest(from);
+          break;
+        }
+        case common::MessageId::CallAccepted:
+        {
+          handler->handleCallAccepted(from);
+          break;
+        }
+        case common::MessageId::CallDropped:
+        {
+          handler->handleCallDropped(from);
+          break;
+        }
+        case common::MessageId::CallTalk:
+        {
+          std::string text = reader.readRemainingText();
+          handler->handleReceivedCallTalk(text);
+          break;
+        }
+
         default:
-            logger.logError("unknow message: ", msgId, ", from: ", from);
+            logger.logError("unknown message: ", msgId, ", from: ", from);
 
         }
     }
@@ -71,25 +100,35 @@ void BtsPort::sendAttachRequest(common::BtsId btsId)
                                 common::PhoneNumber{}};
     msg.writeBtsId(btsId);
     transport.sendMessage(msg.getMessage());
-
-
 }
 
-void BtsPort::handleDisconnected() const
-{
-        handler->handleDisconnected();
+void BtsPort::handleDisconnected() const {
+    handler->handleDisconnected();
 }
 
-void BtsPort::sendMessage(common::PhoneNumber dest, const std::string& message)
-{
+void BtsPort::sendCallAccepted(common::PhoneNumber to) {
+  logger.logDebug("sendCallAccept to: ", to);
+  common::OutgoingMessage msg(common::MessageId::CallAccepted, phoneNumber, to);
+  transport.sendMessage(msg.getMessage());
+}
 
-    common::OutgoingMessage msg{common::MessageId::Sms,
-                                phoneNumber,
-                                dest};
-    msg.writeText(message);
+void BtsPort::sendCallDrop(common::PhoneNumber to) {
+  logger.logDebug("sendCallDrop to: ", to);
+  common::OutgoingMessage msg(common::MessageId::CallDropped, phoneNumber, to);
+  transport.sendMessage(msg.getMessage());
+}
+
+void BtsPort::sendCallRequest(common::PhoneNumber to)
+{
+    logger.logDebug("sendCallRequest to: ", to);
+    common::OutgoingMessage msg(common::MessageId::CallRequest, phoneNumber, to);
     transport.sendMessage(msg.getMessage());
-
-    logger.logDebug("sendMessage: from ", phoneNumber, " to ", dest, " text: ", message);
 }
 
+void BtsPort::sendCallTalk(common::PhoneNumber to, const std::string &text) {
+    logger.logInfo("Number " + to_string(to) + ":  " + text);
+    common::OutgoingMessage msg{common::MessageId::CallTalk,phoneNumber,to};
+    msg.writeText(text);
+    transport.sendMessage(msg.getMessage());
+}
 }

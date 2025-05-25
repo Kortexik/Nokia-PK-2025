@@ -17,30 +17,46 @@ BaseState::~BaseState()
 
 void BaseState::handleTimeout()
 {
-    logger.logError("Uexpected: handleTimeout");
+    logger.logError("Unexpected: handleTimeout");
 }
 
 void BaseState::handleSib(common::BtsId btsId)
 {
-    logger.logError("Uexpected: handleSib: ", btsId);
+    logger.logError("Unexpected: handleSib: ", btsId);
 }
 
 void BaseState::handleAttachAccept()
 {
-    logger.logError("Uexpected: handleAttachAccept");
+    logger.logError("Unexpected: handleAttachAccept");
 }
 
 void BaseState::handleAttachReject()
 {
-    logger.logError("Uexpected: handleAttachReject");
+    logger.logError("Unexpected: handleAttachReject");
 }
 void BaseState:: handleDisconnected() {
-    logger.logError("Uexpected: handleDisconnected");
+    logger.logError("Unexpected: handleDisconnected");
 }
 
-void BaseState::handleSendMessage(common::PhoneNumber dest, const std::string& message)
+void BaseState::handleSmsReceived(common::PhoneNumber fromNumber, const std::string& message)
 {
-    logger.logError("Uexpected: handleSendMessage");
+    logger.logError("Unexpected: handleSmsReceived from: ", fromNumber, " text: ", message);
+}
+void BaseState::handleSendCallDropped(common::PhoneNumber from) {
+    logger.logError("Unexpected: handleSendCallDropped");
 }
 
+void BaseState::handleSendCallTalk(common::PhoneNumber to, const std::string &msg)
+{
+    logger.logError("Unexpected : handleSendCallTalk ");
+}
+
+void BaseState::handleMenuSelection(unsigned int index)
+{
+    logger.logError("Unexpected : handleMenuSelection ");
+}
+
+void BaseState::handleReceivedCallTalk(const std::string &text) {
+    logger.logError("Unexpected : handleReceivedCallTalk ");
+}
 }
