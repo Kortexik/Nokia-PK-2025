@@ -38,6 +38,7 @@ public:
     // IUserEventsHandler interface
     void handleAccept() override;
     void handleReject() override;
+    void handleMenuSelection(unsigned int index) override;
     void handleDial(common::PhoneNumber to) override;
 
     void handleSendCallDropped(common::PhoneNumber from) override;

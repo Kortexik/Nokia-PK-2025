@@ -1,8 +1,10 @@
 #include "UserPort.hpp"
+
+#include "SmsDb.hpp"
+#include "UeGui/ICallMode.hpp"
+#include "UeGui/IDialMode.hpp"
 #include "UeGui/IListViewMode.hpp"
 #include "UeGui/ITextMode.hpp"
-#include "UeGui/IDialMode.hpp"
-#include "UeGui/ICallMode.hpp"
 #include <chrono>
 
 namespace ue
@@ -53,14 +55,15 @@ void UserPort::showConnected()
         if (!exists) {
             return;
         }
-            
+
         switch (selectedIndex)
         {
         case 0:
             logger.logDebug("Handling Compose SMS not implemented");
             break;
         case 1:
-            logger.logDebug("Handle View SMS not implemented");
+            logger.logDebug("User selected: View");
+            handler->handleMenuSelection(selectedIndex);
             break;
         case 2:
             logger.logDebug("User selected: Call");
@@ -73,15 +76,49 @@ void UserPort::showConnected()
     });
 }
 
+void UserPort::showNewSms()
+{
+    logger.logInfo("Showing new SMS");
+    gui.showNewSms(true);
+}
+
+void UserPort::displaySmsList(const std::vector<Sms>& messages)
+{
+    logger.logInfo("Displaying SMS list with length: ", messages.size());
+    IUeGui::IListViewMode& menu = gui.setListViewMode();
+    menu.clearSelectionList();
+    for (auto it = messages.rbegin(); it != messages.rend(); ++it)
+    {
+        std::string messsageDirection;
+        switch (it->getDirection())
+        {
+        case Sms::Direction::IN:
+            messsageDirection = "From: ";
+            break;
+        case Sms::Direction::OUT:
+            messsageDirection = "To: ";
+            break;
+        default:
+            logger.logInfo("Unknown direction of SMS");
+            return;
+        }
+        menu.addSelectionListItem(messsageDirection + common::to_string(it->getPhoneNumber()), "");
+    }
+    gui.setRejectCallback([this]
+    {
+        if (handler) handler->handleReject();
+    });
+}
+
 void UserPort::showCallRequest(common::PhoneNumber from)
 {
     auto& alertMode = gui.setAlertMode();
     alertMode.setText("Incoming call from: " + std::to_string(from.value));
-    
+
     gui.setAcceptCallback([this]() {
         if (handler) handler->handleAccept();
     });
-    
+
     gui.setRejectCallback([this]() {
         if (handler) handler->handleReject();
     });
@@ -130,14 +167,14 @@ void UserPort::showCallDroppedAfterTalk(common::PhoneNumber from)
 void UserPort::showDialing()
 {
     auto& dialMode = gui.setDialMode();
-    
+
     gui.setAcceptCallback([this, &dialMode]() {
         auto enteredNumber = dialMode.getPhoneNumber();
-        if (handler && enteredNumber.isValid()) { 
+        if (handler && enteredNumber.isValid()) {
             handler->handleDial(enteredNumber);
         }
     });
-    
+
     gui.setRejectCallback([this]() {
         if (handler) {
             handler->handleReject();
@@ -178,11 +215,6 @@ void UserPort::waitingForCallRespond(common::PhoneNumber to) {
 void UserPort::newCallMessage(const std::string &text) {
     callMode->clearIncomingText();
     callMode->appendIncomingText(text);
-}
-
-void UserPort::showSms()
-{
-    gui.showNewSms(true);
 }
 
 }

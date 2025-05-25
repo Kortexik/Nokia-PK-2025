@@ -34,11 +34,11 @@ void BaseState::handleAttachReject()
 {
     logger.logError("Unexpected: handleAttachReject");
 }
-    void BaseState:: handleDisconnected() {
+void BaseState:: handleDisconnected() {
     logger.logError("Unexpected: handleDisconnected");
-    }
+}
 
-void BaseState::handleSmsReceived(common::PhoneNumber fromNumber, std::string message)
+void BaseState::handleSmsReceived(common::PhoneNumber fromNumber, const std::string& message)
 {
     logger.logError("Unexpected: handleSmsReceived from: ", fromNumber, " text: ", message);
 }
@@ -46,8 +46,14 @@ void BaseState::handleSendCallDropped(common::PhoneNumber from) {
     logger.logError("Unexpected: handleSendCallDropped");
 }
 
-void BaseState::handleSendCallTalk(common::PhoneNumber to, const std::string &msg) {
+void BaseState::handleSendCallTalk(common::PhoneNumber to, const std::string &msg)
+{
     logger.logError("Unexpected : handleSendCallTalk ");
+}
+
+void BaseState::handleMenuSelection(unsigned int index)
+{
+    logger.logError("Unexpected : handleMenuSelection ");
 }
 
 void BaseState::handleReceivedCallTalk(const std::string &text) {

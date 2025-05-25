@@ -75,6 +75,11 @@ void Application::handleReject()
     context.state->handleReject();
 }
 
+void Application::handleMenuSelection(unsigned int index)
+{
+    context.state->handleMenuSelection(index);
+}
+
 void Application::handleReceivedCallTalk(const std::string& text)
 {
     context.state->handleReceivedCallTalk(text);

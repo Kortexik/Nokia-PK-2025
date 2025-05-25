@@ -40,5 +40,6 @@ public:
     MOCK_METHOD(void, setCallMode, (common::PhoneNumber partnerPhoneNumber), (final));
     MOCK_METHOD(void, newCallMessage, (const std::string &text), (final));
     MOCK_METHOD(void, waitingForCallRespond, (common::PhoneNumber to), (final));
+    MOCK_METHOD(void, showNewSms, (), (override));
 };
 }

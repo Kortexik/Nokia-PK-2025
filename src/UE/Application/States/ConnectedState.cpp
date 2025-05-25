@@ -1,6 +1,7 @@
 #include "ConnectedState.hpp"
 #include "NotConnectedState.hpp"
 #include "TalkingState.hpp"
+#include "SmsListState.hpp"
 
 namespace ue
 {
@@ -11,17 +12,16 @@ ConnectedState::ConnectedState(Context &context)
     context.user.showConnected();
 
 }
-void ConnectedState::handleDisconnected() {
+void ConnectedState::handleDisconnected()
+{
     context.setState<NotConnectedState>();
+}
 
 void ConnectedState::handleSmsReceived(common::PhoneNumber from, const std::string& message)
 {
-    int index = context.smsDb.addSms(from, message);
+    int index = context.smsDb.addReceivedSms(from, message);
     logger.logInfo("Received SMS from:", from, "with message:", message);
-    context.user.showSms();
-}
-
-
+    context.user.showNewSms();
 }
 
 void ConnectedState::handleTimeout()
@@ -51,12 +51,12 @@ void ConnectedState::handleReject()
         context.user.showConnected();
 }
 
-void ConnectedState::handleMenuSelection(const std::string& selection)
+void ConnectedState::handleMenuSelection(unsigned int index)
 {
-    if (selection == "Call")
+    if (index == 1)
     {
-        logger.logDebug("Call Selected From Menu");
-        context.user.showDialing();
+        logger.logInfo("View SMS selected");
+        context.setState<SmsListState>();
     }
 }
 
