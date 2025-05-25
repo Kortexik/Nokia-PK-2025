@@ -31,7 +31,7 @@ public:
     //virtual void showSmsReceived() = 0;
     virtual void displaySmsContent(Sms& sms) = 0;
     virtual void displaySmsList(const std::vector<Sms>& messages) = 0;
-    virtual void showNewSms() = 0;
+    virtual void showNewSms(bool present) = 0;
     // virtual common::PhoneNumber getSmsRecipient() const = 0;
     //virtual std::string getSmsText() const = 0;
 

@@ -35,36 +35,6 @@ std::size_t SmsDb::getUnreadCount() const
     return amount;
 }
 
-bool SmsDb::markAsRead(std::size_t index)
-{
-    if (index >= messages.size())
-    {
-        return false;
-    }
-
-    if (messages[index].getDirection() == Sms::Direction::IN && messages[index].getStatus() == Sms::Status::UNREAD)
-    {
-        messages[index].setStatus(Sms::Status::READ);
-        return true;
-    }
-    return false;
-}
-
-bool SmsDb::markAsFailed(std::optional<std::size_t> index)
-{
-    if (index.has_value() && index.value() < messages.size())
-    {
-        auto &msg = messages[lastSentIndex.value()];
-        if (msg.getDirection() == Sms::Direction::OUT)
-        {
-            msg.setStatus(Sms::Status::FAILED);
-            lastSentIndex.reset();
-            return true;
-        }
-    }
-	return false;
-}
-
 std::vector<Sms>& SmsDb::getAllSms()
 {
     return messages;

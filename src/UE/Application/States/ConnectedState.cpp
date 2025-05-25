@@ -10,7 +10,7 @@ ConnectedState::ConnectedState(Context &context)
     : BaseState(context, "ConnectedState")
 {
     context.user.showConnected();
-
+    context.user.showNewSms(context.smsDb.getUnreadCount() > 0);
 }
 void ConnectedState::handleDisconnected()
 {
@@ -19,9 +19,9 @@ void ConnectedState::handleDisconnected()
 
 void ConnectedState::handleSmsReceived(common::PhoneNumber from, const std::string& message)
 {
-    int index = context.smsDb.addReceivedSms(from, message);
+    context.smsDb.addReceivedSms(from, message);
     logger.logInfo("Received SMS from:", from, "with message:", message);
-    context.user.showNewSms();
+    context.user.showNewSms(context.smsDb.getUnreadCount() > 0);
 }
 
 void ConnectedState::handleTimeout()

@@ -9,6 +9,7 @@ namespace ue
         context.smsDb.addSentSms(context.phoneNumber, "test1");
         context.smsDb.addReceivedSms(context.phoneNumber, "test2");
         context.user.displaySmsList(context.smsDb.getAllSms());
+        context.user.showNewSms(context.smsDb.getUnreadCount() > 0);
     }
 
     void SmsListState::handleReject()

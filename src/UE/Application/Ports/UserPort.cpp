@@ -61,10 +61,10 @@ void UserPort::showConnected()
     });
 }
 
-void UserPort::showNewSms()
+void UserPort::showNewSms(bool present)
 {
-    logger.logInfo("Showing new SMS");
-    gui.showNewSms(true);
+    logger.logInfo("Showing new SMS - " + present);
+    gui.showNewSms(present);
 }
 
 void UserPort::displaySmsList(const std::vector<Sms>& messages)

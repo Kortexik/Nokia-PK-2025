@@ -19,7 +19,7 @@ public:
     void showNotConnected() override;
     void showConnecting() override;
     void showConnected() override;
-    void showNewSms() override;
+    void showNewSms(bool present) override;
     void displaySmsList(const std::vector<Sms>& messages) override;
     void displaySmsContent(Sms& sms);
     void displayAlert(const std::string& title, const std::string& message);

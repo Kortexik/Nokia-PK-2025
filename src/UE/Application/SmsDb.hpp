@@ -19,8 +19,6 @@ public:
     std::size_t addSentSms(common::PhoneNumber to, const std::string& text);
     std::vector<Sms>& getAllSms();
     std::size_t getUnreadCount() const;
-    bool markAsRead(std::size_t index);
-    bool markAsFailed(std::optional<std::size_t> index);
 };
 
 } // namespace ue
