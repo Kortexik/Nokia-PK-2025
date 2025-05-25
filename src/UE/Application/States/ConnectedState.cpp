@@ -53,10 +53,22 @@ void ConnectedState::handleReject()
 
 void ConnectedState::handleMenuSelection(unsigned int index)
 {
-    if (index == 1)
+    switch (index)
     {
+    case 0:
+        logger.logInfo("Compose SMS - not implemented");
+        break;
+    case 1:
         logger.logInfo("View SMS selected");
         context.setState<SmsListState>();
+        break;
+    case 2:
+        logger.logInfo("Call selected");
+        context.user.showDialing();
+        break;
+    default:
+        logger.logDebug("Default option selected, should be never");
+        break;
     }
 }
 

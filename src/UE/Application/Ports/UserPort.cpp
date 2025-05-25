@@ -5,6 +5,7 @@
 #include "UeGui/IDialMode.hpp"
 #include "UeGui/IListViewMode.hpp"
 #include "UeGui/ITextMode.hpp"
+#include <Messages/MessageId.hpp>
 #include <chrono>
 
 namespace ue
@@ -56,23 +57,7 @@ void UserPort::showConnected()
             return;
         }
 
-        switch (selectedIndex)
-        {
-        case 0:
-            logger.logDebug("Handling Compose SMS not implemented");
-            break;
-        case 1:
-            logger.logDebug("User selected: View");
-            handler->handleMenuSelection(selectedIndex);
-            break;
-        case 2:
-            logger.logDebug("User selected: Call");
-            showDialing();
-            break;
-        default:
-            logger.logDebug("Default option selected, should be never");
-            break;
-        }
+        if (handler) handler->handleMenuSelection(selectedIndex);
     });
 }
 
@@ -89,25 +74,39 @@ void UserPort::displaySmsList(const std::vector<Sms>& messages)
     menu.clearSelectionList();
     for (auto it = messages.rbegin(); it != messages.rend(); ++it)
     {
-        std::string messsageDirection;
-        switch (it->getDirection())
-        {
-        case Sms::Direction::IN:
-            messsageDirection = "From: ";
-            break;
-        case Sms::Direction::OUT:
-            messsageDirection = "To: ";
-            break;
-        default:
-            logger.logInfo("Unknown direction of SMS");
+        logger.logInfo("Status enum value: " + std::to_string(static_cast<int>(it->getStatus())));
+        std::string messageStatus = (it->getStatus() == Sms::Status::UNREAD) ? "NEW! - " : "";
+        std::string messageDirection = (it->getDirection() == Sms::Direction::IN) ? "From: " : "To: ";
+
+        menu.addSelectionListItem(messageStatus + messageDirection + common::to_string(it->getPhoneNumber()), "");
+    }
+
+    gui.setAcceptCallback([this, &menu]() {
+        auto selectedItem = menu.getCurrentItemIndex();
+        bool exists = selectedItem.first;
+        unsigned int selectedIndex = selectedItem.second;
+
+        if (!exists) {
             return;
         }
-        menu.addSelectionListItem(messsageDirection + common::to_string(it->getPhoneNumber()), "");
-    }
+
+        if(handler) handler->handleMenuSelection(selectedIndex);
+    });
+
     gui.setRejectCallback([this]
     {
-        if (handler) handler->handleReject();
+        if(handler) handler->handleReject();
     });
+}
+
+void UserPort::displaySmsContent(Sms& sms)
+{
+    IUeGui::ITextMode& view = gui.setViewTextMode();
+    std::string messageDirection = (sms.getDirection() == Sms::Direction::IN) ? "From: " : "To: ";
+    std::string messageText = sms.getText();
+    std::string text = messageDirection + common::to_string(sms.getPhoneNumber()) + "\n\n" + messageText;
+
+    view.setText(text);
 }
 
 void UserPort::showCallRequest(common::PhoneNumber from)

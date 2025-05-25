@@ -13,5 +13,7 @@ add_library(${PROJECT_NAME} ${SRC_LIST}
         SmsDb.hpp
         States/SmsListState.cpp
         States/SmsListState.hpp
+        States/ViewSmsContentState.cpp
+        States/ViewSmsContentState.hpp
 )
 target_link_libraries(${PROJECT_NAME} Common)

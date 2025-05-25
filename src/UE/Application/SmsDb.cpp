@@ -7,13 +7,17 @@ namespace ue
 
 std::size_t SmsDb::addReceivedSms(common::PhoneNumber source, const std::string& message)
 {
-    messages.push_back(Sms(source, message, Sms::Status::UNREAD));
+    Sms sms = Sms(source, message, Sms::Status::UNREAD);
+    sms.setDirection(Sms::Direction::IN);
+    messages.push_back(sms);
     return messages.size() - 1;
 }
 
 std::size_t SmsDb::addSentSms(common::PhoneNumber to, const std::string& message)
 {
-    messages.push_back(Sms(to, message, Sms::Status::SENT));
+    Sms sms = Sms(to, message, Sms::Status::SENT);
+    sms.setDirection(Sms::Direction::OUT);
+    messages.push_back(sms);
     lastSentIndex = messages.size() - 1;
     return messages.size() - 1;
 }
@@ -61,7 +65,7 @@ bool SmsDb::markAsFailed(std::optional<std::size_t> index)
 	return false;
 }
 
-const std::vector<Sms>& SmsDb::getAllSms() const
+std::vector<Sms>& SmsDb::getAllSms()
 {
     return messages;
 }

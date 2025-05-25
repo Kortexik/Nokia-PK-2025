@@ -4,7 +4,7 @@
 
 namespace ue
 {
-    Sms::Status Sms::getStatus()
+    Sms::Status Sms::getStatus() const
     {
         return status;
     }

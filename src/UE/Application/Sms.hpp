@@ -24,7 +24,7 @@ public:
 
     Sms(common::PhoneNumber relativeNumber, const std::string& text, Status status)
         : phoneNumber(relativeNumber), text(text), status(status) {}
-    Status getStatus();
+    Status getStatus() const;
     Direction getDirection() const;
     std::string getText() const;
     common::PhoneNumber getPhoneNumber() const;

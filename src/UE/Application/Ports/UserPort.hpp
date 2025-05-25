@@ -21,7 +21,7 @@ public:
     void showConnected() override;
     void showNewSms() override;
     void displaySmsList(const std::vector<Sms>& messages) override;
-    void displaySmsContent(const Sms& message);
+    void displaySmsContent(Sms& sms);
     void displayAlert(const std::string& title, const std::string& message);
     //common::PhoneNumber getSmsRecipient() const;
     //std::string getSmsText() const override;
