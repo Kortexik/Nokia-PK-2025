@@ -22,6 +22,7 @@ namespace ue
         context.smsDb.addSentSms(number, text);
         context.bts.sendSmsMessage(number, text);
 
+        context.setState<ConnectedState>();
     }
 
     void SmsComposeState::handleReject()
