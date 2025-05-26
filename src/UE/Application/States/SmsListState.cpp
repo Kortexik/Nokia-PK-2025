@@ -18,7 +18,7 @@ namespace ue
 
     void SmsListState::handleMenuSelection(unsigned int index)
     {
-        std::vector<Sms>& messages = context.smsDb.getAllSms();
+        std::vector<Sms> &messages = context.smsDb.getAllSms();
         int messageIndex = messages.size() - index - 1;
 
         if (messageIndex < 0)
@@ -27,7 +27,7 @@ namespace ue
             return;
         }
 
-        Sms& sms = messages[messageIndex];
+        Sms &sms = messages[messageIndex];
         if (sms.getDirection() == Sms::Direction::IN && sms.getStatus() == Sms::Status::UNREAD)
         {
             logger.logInfo("SMS of index " + std::to_string(messageIndex) + " status set to READ from UNREAD");
@@ -36,4 +36,11 @@ namespace ue
 
         context.setState<ViewSmsContentState>(sms);
     }
-}
+    void SmsListState::handleSmsReceived(common::PhoneNumber from, const std::string &message)
+    {
+        context.smsDb.addReceivedSms(from, message);
+        logger.logInfo("Received SMS from:", from, "with message:", message);
+        context.user.showNewSms(context.smsDb.getUnreadCount() > 0);
+        context.user.displaySmsList(context.smsDb.getAllSms());
+    }
+} // namespace ue
