@@ -28,12 +28,11 @@ public:
     virtual void showNotConnected() = 0;
     virtual void showConnecting() = 0;
     virtual void showConnected() = 0;
-    //virtual void showSmsReceived() = 0;
+    virtual void displaySmsCompose() = 0;
+    virtual Sms getSmsComposeData() = 0;
     virtual void displaySmsContent(Sms& sms) = 0;
     virtual void displaySmsList(const std::vector<Sms>& messages) = 0;
     virtual void showNewSms(bool present) = 0;
-    // virtual common::PhoneNumber getSmsRecipient() const = 0;
-    //virtual std::string getSmsText() const = 0;
 
     virtual void showCallRequest(common::PhoneNumber from) = 0;
     virtual void showCallAccepted(common::PhoneNumber from) = 0;

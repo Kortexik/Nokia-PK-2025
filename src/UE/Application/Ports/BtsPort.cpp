@@ -131,4 +131,12 @@ void BtsPort::sendCallTalk(common::PhoneNumber to, const std::string &text) {
     msg.writeText(text);
     transport.sendMessage(msg.getMessage());
 }
+
+void BtsPort::sendSmsMessage(common::PhoneNumber to, const std::string &text)
+{
+    logger.logInfo("Sending SMS message to: " + common::to_string(to));
+    common::OutgoingMessage msg {common::MessageId::Sms,phoneNumber,to};
+    msg.writeText(text);
+    transport.sendMessage(msg.getMessage());
+}
 }

@@ -20,11 +20,11 @@ public:
     void showConnecting() override;
     void showConnected() override;
     void showNewSms(bool present) override;
+    void displaySmsCompose() override;
+    Sms getSmsComposeData() override;
     void displaySmsList(const std::vector<Sms>& messages) override;
     void displaySmsContent(Sms& sms);
     void displayAlert(const std::string& title, const std::string& message);
-    //common::PhoneNumber getSmsRecipient() const;
-    //std::string getSmsText() const override;
 
     void showCallRequest(common::PhoneNumber from) override;
     void showCallAccepted(common::PhoneNumber from) override;

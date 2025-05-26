@@ -1,7 +1,8 @@
 #include "ConnectedState.hpp"
 #include "NotConnectedState.hpp"
-#include "TalkingState.hpp"
+#include "SmsComposeState.hpp"
 #include "SmsListState.hpp"
+#include "TalkingState.hpp"
 
 namespace ue
 {
@@ -56,10 +57,9 @@ void ConnectedState::handleMenuSelection(unsigned int index)
     switch (index)
     {
     case 0:
-        logger.logInfo("Compose SMS - not implemented");
+        context.setState<SmsComposeState>();
         break;
     case 1:
-        logger.logInfo("View SMS selected");
         context.setState<SmsListState>();
         break;
     case 2:

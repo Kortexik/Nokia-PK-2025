@@ -14,7 +14,6 @@ public:
         READ,
         UNREAD,
         SENT,
-        FAILED
     };
     enum class Direction: uint8_t
     {
