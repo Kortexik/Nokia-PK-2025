@@ -1,5 +1,7 @@
 #include "ConnectedState.hpp"
 #include "NotConnectedState.hpp"
+#include "SmsComposeState.hpp"
+#include "SmsListState.hpp"
 #include "TalkingState.hpp"
 
 namespace ue
@@ -9,11 +11,18 @@ ConnectedState::ConnectedState(Context &context)
     : BaseState(context, "ConnectedState")
 {
     context.user.showConnected();
-
+    context.user.showNewSms(context.smsDb.getUnreadCount() > 0);
 }
-void ConnectedState::handleDisconnected() {
+void ConnectedState::handleDisconnected()
+{
     context.setState<NotConnectedState>();
+}
 
+void ConnectedState::handleSmsReceived(common::PhoneNumber from, const std::string& message)
+{
+    context.smsDb.addReceivedSms(from, message);
+    logger.logInfo("Received SMS from:", from, "with message:", message);
+    context.user.showNewSms(context.smsDb.getUnreadCount() > 0);
 }
 
 void ConnectedState::handleTimeout()
@@ -43,12 +52,23 @@ void ConnectedState::handleReject()
         context.user.showConnected();
 }
 
-void ConnectedState::handleMenuSelection(const std::string& selection)
+void ConnectedState::handleMenuSelection(unsigned int index)
 {
-    if (selection == "Call")
+    switch (index)
     {
-        logger.logDebug("Call Selected From Menu");
+    case 0:
+        context.setState<SmsComposeState>();
+        break;
+    case 1:
+        context.setState<SmsListState>();
+        break;
+    case 2:
+        logger.logInfo("Call selected");
         context.user.showDialing();
+        break;
+    default:
+        logger.logDebug("Default option selected, should be never");
+        break;
     }
 }
 
@@ -79,6 +99,15 @@ void ConnectedState::handleCallDropped(common::PhoneNumber from) {
     context.user.showCallDropped(from);
     callingNumber = common::PhoneNumber{};
 }
+
+void ConnectedState::handleCallAccepted(common::PhoneNumber from)
+{
+    context.timer.stopTimer();
+    if (from == callingNumber) {
+        context.setState<TalkingState>(from);
+    }
+}
+
 
 void ConnectedState::handleSendCallDropped(common::PhoneNumber from){
     context.timer.stopTimer();

@@ -51,6 +51,12 @@ void BtsPort::handleMessage(BinaryMessage msg)
                 handler->handleAttachReject();
             break;
         }
+        case common::MessageId::Sms:
+        {
+            std::string message = reader.readRemainingText();
+            handler->handleSmsReceived(from, message);
+            break;
+        }
 
         case common::MessageId::CallRequest:
         {
@@ -122,6 +128,14 @@ void BtsPort::sendCallRequest(common::PhoneNumber to)
 void BtsPort::sendCallTalk(common::PhoneNumber to, const std::string &text) {
     logger.logInfo("Number " + to_string(to) + ":  " + text);
     common::OutgoingMessage msg{common::MessageId::CallTalk,phoneNumber,to};
+    msg.writeText(text);
+    transport.sendMessage(msg.getMessage());
+}
+
+void BtsPort::sendSmsMessage(common::PhoneNumber to, const std::string &text)
+{
+    logger.logInfo("Sending SMS message to: " + common::to_string(to));
+    common::OutgoingMessage msg {common::MessageId::Sms,phoneNumber,to};
     msg.writeText(text);
     transport.sendMessage(msg.getMessage());
 }

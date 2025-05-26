@@ -29,6 +29,7 @@ public:
     void handleAttachAccept() override;
     void handleAttachReject() override;
     void handleDisconnected() override;
+    void handleSmsReceived(common::PhoneNumber from, const std::string& message) override;
     void handleCallRequest(common::PhoneNumber from) override;
     void handleCallAccepted(common::PhoneNumber from) override;
     void handleCallDropped(common::PhoneNumber from) override;
@@ -37,6 +38,7 @@ public:
     // IUserEventsHandler interface
     void handleAccept() override;
     void handleReject() override;
+    void handleMenuSelection(unsigned int index) override;
     void handleDial(common::PhoneNumber to) override;
 
     void handleSendCallDropped(common::PhoneNumber from) override;

@@ -20,10 +20,12 @@ public:
     // IBtsEventsHandler interface
     void handleSib(common::BtsId btsId) override;
 
+    //IEventsHandler interface
 
     void handleAttachAccept() override;
     void handleAttachReject() override;
     void handleDisconnected() override;
+    void handleSmsReceived(common::PhoneNumber fromNumber, const std::string& message) override;
 
     virtual void handleCallRequest(common::PhoneNumber from)  override {
       logger.logDebug("Dropping a call in states that is not connected state");
@@ -37,7 +39,7 @@ public:
     void handleReceivedCallTalk(const std::string &text) override;
     void handleSendCallTalk(common::PhoneNumber to, const std::string &msg) override;
 
-    virtual void handleMenuSelection(const std::string& selection) {}
+    virtual void handleMenuSelection(unsigned int index) override;
 
 protected:
     Context& context;

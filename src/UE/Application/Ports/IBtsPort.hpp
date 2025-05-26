@@ -4,6 +4,8 @@
 #include "Messages/PhoneNumber.hpp"
 #include "Messages/MessageId.hpp"
 
+#include <Messages/PhoneNumber.hpp>
+
 namespace ue
 {
 
@@ -16,6 +18,7 @@ public:
     virtual void handleAttachAccept() = 0;
     virtual void handleAttachReject() = 0;
     virtual void handleDisconnected() = 0;
+    virtual void handleSmsReceived(common::PhoneNumber from, const std::string& message) = 0;
 
     virtual void handleCallRequest(common::PhoneNumber from) = 0;
     virtual void handleCallAccepted(common:: PhoneNumber from) = 0;
@@ -33,6 +36,7 @@ public:
     virtual void sendCallDrop(common::PhoneNumber to) = 0;
     virtual void sendCallRequest(common::PhoneNumber to) = 0;
     virtual void sendCallTalk(common::PhoneNumber to, const std::string &text) = 0;
+    virtual void sendSmsMessage(common::PhoneNumber to, const std::string& text) = 0;
 };
 
 }

@@ -1,8 +1,12 @@
 #include "UserPort.hpp"
+
+#include "SmsDb.hpp"
+#include "UeGui/ICallMode.hpp"
+#include "UeGui/IDialMode.hpp"
 #include "UeGui/IListViewMode.hpp"
 #include "UeGui/ITextMode.hpp"
-#include "UeGui/IDialMode.hpp"
-#include "UeGui/ICallMode.hpp"
+#include <Messages/MessageId.hpp>
+#include <UeGui/ISmsComposeMode.hpp>
 #include <chrono>
 
 namespace ue
@@ -53,35 +57,97 @@ void UserPort::showConnected()
         if (!exists) {
             return;
         }
-            
-        switch (selectedIndex)
-        {
-        case 0:
-            logger.logDebug("Handling Compose SMS not implemented");
-            break;
-        case 1:
-            logger.logDebug("Handle View SMS not implemented");
-            break;
-        case 2:
-            logger.logDebug("User selected: Call");
-            showDialing();
-            break;
-        default:
-            logger.logDebug("Default option selected, should be never");
-            break;
-        }
+
+        if (handler) handler->handleMenuSelection(selectedIndex);
     });
+}
+
+void UserPort::showNewSms(bool present)
+{
+    logger.logInfo("Showing new SMS - " + present);
+    gui.showNewSms(present);
+}
+
+void UserPort::displaySmsCompose()
+{
+    logger.logInfo("Displaying SMS compose mode");
+    IUeGui::ISmsComposeMode& compose = gui.setSmsComposeMode();
+
+    compose.clearSmsText();
+
+    gui.setAcceptCallback([this]
+    {
+        if(handler) handler->handleAccept();
+    });
+    gui.setRejectCallback([this]
+    {
+        if(handler) handler->handleReject();
+    });
+}
+
+Sms UserPort::getSmsComposeData()
+{
+    IUeGui::ISmsComposeMode& compose = gui.setSmsComposeMode();
+
+    common::PhoneNumber number = compose.getPhoneNumber();
+    const std::string text = compose.getSmsText();
+    Sms sms {number, text, Sms::Status::SENT};
+
+    compose.clearSmsText();
+
+    return sms;
+}
+
+void UserPort::displaySmsList(const std::vector<Sms>& messages)
+{
+    logger.logInfo("Displaying SMS list with length: ", messages.size());
+    IUeGui::IListViewMode& menu = gui.setListViewMode();
+    menu.clearSelectionList();
+    for (auto it = messages.rbegin(); it != messages.rend(); ++it)
+    {
+        std::string messageStatus = (it->getStatus() == Sms::Status::UNREAD) ? "NEW! - " : "";
+        std::string messageDirection = (it->getDirection() == Sms::Direction::IN) ? "From: " : "To: ";
+
+        menu.addSelectionListItem(messageStatus + messageDirection + common::to_string(it->getPhoneNumber()), "");
+    }
+
+    gui.setAcceptCallback([this, &menu]() {
+        auto selectedItem = menu.getCurrentItemIndex();
+        bool exists = selectedItem.first;
+        unsigned int selectedIndex = selectedItem.second;
+
+        if (!exists) {
+            return;
+        }
+
+        if(handler) handler->handleMenuSelection(selectedIndex);
+    });
+
+    gui.setRejectCallback([this]
+    {
+        if(handler) handler->handleReject();
+    });
+}
+
+void UserPort::displaySmsContent(Sms& sms)
+{
+    IUeGui::ITextMode& view = gui.setViewTextMode();
+    std::string messageDirection = (sms.getDirection() == Sms::Direction::IN) ? "From: " : "To: ";
+    std::string messageText = sms.getText();
+    std::string text = messageDirection + common::to_string(sms.getPhoneNumber()) + "\n\n" + messageText;
+
+    view.setText(text);
 }
 
 void UserPort::showCallRequest(common::PhoneNumber from)
 {
     auto& alertMode = gui.setAlertMode();
     alertMode.setText("Incoming call from: " + std::to_string(from.value));
-    
+
     gui.setAcceptCallback([this]() {
         if (handler) handler->handleAccept();
     });
-    
+
     gui.setRejectCallback([this]() {
         if (handler) handler->handleReject();
     });
@@ -130,14 +196,14 @@ void UserPort::showCallDroppedAfterTalk(common::PhoneNumber from)
 void UserPort::showDialing()
 {
     auto& dialMode = gui.setDialMode();
-    
+
     gui.setAcceptCallback([this, &dialMode]() {
         auto enteredNumber = dialMode.getPhoneNumber();
-        if (handler && enteredNumber.isValid()) { 
+        if (handler && enteredNumber.isValid()) {
             handler->handleDial(enteredNumber);
         }
     });
-    
+
     gui.setRejectCallback([this]() {
         if (handler) {
             handler->handleReject();

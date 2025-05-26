@@ -1,7 +1,6 @@
 #include "Application.hpp"
-#include "Messages/PhoneNumber.hpp"
-#include "Ports/IUserPort.hpp"
 #include "States/NotConnectedState.hpp"
+#include "States/ConnectedState.hpp"
 
 namespace ue
 {
@@ -43,11 +42,14 @@ void Application::handleAttachReject()
     context.state->handleAttachReject();
 }
 
-void Application::handleDisconnected()
-{
+void Application::handleDisconnected() {
     context.state->handleDisconnected();
 }
 
+void Application::handleSmsReceived(common::PhoneNumber from, const std::string& message)
+{
+    context.state->handleSmsReceived(from, message);
+}
 void Application::handleCallRequest(common::PhoneNumber from)
 {
     context.state->handleCallRequest(from);
@@ -60,7 +62,7 @@ void Application::handleCallAccepted(common::PhoneNumber from)
 
 void Application::handleCallDropped(common::PhoneNumber from)
 {
-    context.state->handleCallDropped(from);    
+    context.state->handleCallDropped(from);
 }
 
 void Application::handleAccept()
@@ -71,6 +73,11 @@ void Application::handleAccept()
 void Application::handleReject()
 {
     context.state->handleReject();
+}
+
+void Application::handleMenuSelection(unsigned int index)
+{
+    context.state->handleMenuSelection(index);
 }
 
 void Application::handleReceivedCallTalk(const std::string& text)

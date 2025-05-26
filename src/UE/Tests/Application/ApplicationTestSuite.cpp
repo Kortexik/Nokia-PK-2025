@@ -77,6 +77,7 @@ TEST_F(ApplicationConnectingTestSuite, shallConnectOnAttachAccept)
 {
     EXPECT_CALL(timerPortMock, stopTimer());
     EXPECT_CALL(userPortMock, showConnected());
+    EXPECT_CALL(userPortMock, showNewSms(_)).Times(AtLeast(1));
 
     objectUnderTest->handleAttachAccept();
 }
@@ -99,7 +100,8 @@ struct ApplicationConnectedTestSuite : ApplicationConnectingTestSuite
         ApplicationConnectingTestSuite::SetUp();
 
         EXPECT_CALL(timerPortMock, stopTimer());
-        EXPECT_CALL(userPortMock, showConnected());
+        EXPECT_CALL(userPortMock, showConnected()).Times(AtLeast(1));
+        EXPECT_CALL(userPortMock, showNewSms(_)).Times(AtLeast(1));
 
         objectUnderTest->handleAttachAccept();
     }
