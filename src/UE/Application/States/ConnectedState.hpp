@@ -1,5 +1,5 @@
 #pragma once
-#include "TalkingState.hpp"
+
 #include "BaseState.hpp"
 
 namespace ue
@@ -18,13 +18,8 @@ public:
     void handleMenuSelection(unsigned int index) override;
     void handleDial(common::PhoneNumber to) override;
     void handleCallDropped(common::PhoneNumber from) override;
-    void handleCallAccepted(common::PhoneNumber from) override {
-        context.timer.stopTimer();
-        if (from == callingNumber) {
-            context.setState<TalkingState>(from);
-        }
-    }
-    void handleSendCallDropped(common::PhoneNumber from) final;
+    void handleCallAccepted(common::PhoneNumber from) override;
+    void handleSendCallDropped(common::PhoneNumber from);
 private:
     common::PhoneNumber callingNumber{};
 };

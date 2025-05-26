@@ -34,6 +34,7 @@ public:
     MOCK_METHOD(void, sendCallDrop, (common::PhoneNumber to), (final));
     MOCK_METHOD(void, sendCallRequest, (common::PhoneNumber to), (final));
     MOCK_METHOD(void, sendCallTalk, (common::PhoneNumber to, const std::string &text), (final));
+    MOCK_METHOD(void, sendSmsMessage, (common::PhoneNumber to, const std::string &text), (final));
 };
 
 }

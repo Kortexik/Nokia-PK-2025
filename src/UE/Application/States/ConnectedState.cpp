@@ -100,6 +100,15 @@ void ConnectedState::handleCallDropped(common::PhoneNumber from) {
     callingNumber = common::PhoneNumber{};
 }
 
+void ConnectedState::handleCallAccepted(common::PhoneNumber from)
+{
+    context.timer.stopTimer();
+    if (from == callingNumber) {
+        context.setState<TalkingState>(from);
+    }
+}
+
+
 void ConnectedState::handleSendCallDropped(common::PhoneNumber from){
     context.timer.stopTimer();
     context.bts.sendCallDrop(from);
