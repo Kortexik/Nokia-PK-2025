@@ -1,24 +1,20 @@
 #pragma once
 
+#include "Context.hpp"
+#include "IEventsHandler.hpp"
 #include "Logger/PrefixedLogger.hpp"
 #include "Messages/PhoneNumber.hpp"
-#include "IEventsHandler.hpp"
-#include "Context.hpp"
 
 namespace ue
 {
 
-using common::PhoneNumber;
 using common::ILogger;
+using common::PhoneNumber;
 
 class Application : public IEventsHandler
 {
-public:
-    Application(PhoneNumber phoneNumber,
-                ILogger& iLogger,
-                IBtsPort& bts,
-                IUserPort& user,
-                ITimerPort& timer);
+ public:
+    Application(PhoneNumber phoneNumber, ILogger &iLogger, IBtsPort &bts, IUserPort &user, ITimerPort &timer);
     ~Application();
 
     // ITimerEventsHandler interface
@@ -29,7 +25,7 @@ public:
     void handleAttachAccept() override;
     void handleAttachReject() override;
     void handleDisconnected() override;
-    void handleSmsReceived(common::PhoneNumber from, const std::string& message) override;
+    void handleSmsReceived(common::PhoneNumber from, const std::string &message) override;
     void handleCallRequest(common::PhoneNumber from) override;
     void handleCallAccepted(common::PhoneNumber from) override;
     void handleCallDropped(common::PhoneNumber from) override;
@@ -45,10 +41,9 @@ public:
 
     void handleSendCallTalk(common::PhoneNumber to, const std::string &msg) override;
 
-private:
+ private:
     Context context;
     common::PrefixedLogger logger;
-
 };
 
-}
+} // namespace ue

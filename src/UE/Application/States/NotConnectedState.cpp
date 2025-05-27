@@ -4,8 +4,7 @@
 namespace ue
 {
 
-NotConnectedState::NotConnectedState(Context& context)
-    : BaseState(context, "NotConnectedState")
+NotConnectedState::NotConnectedState(Context &context) : BaseState(context, "NotConnectedState")
 {
     context.user.showNotConnected();
 }
@@ -41,4 +40,4 @@ void NotConnectedState::handleAttachReject()
     logger.logError("Unexpected attach reject in NotConnectedState");
 }
 
-}
+} // namespace ue

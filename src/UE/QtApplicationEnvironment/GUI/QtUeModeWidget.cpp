@@ -4,11 +4,10 @@ namespace ue
 {
 
 QtUeModeWidget::QtUeModeWidget(QtPhoneNumberEdit &phoneNumberEdit, QtStackedWidget &stackedWidget)
-    : phoneNumberEdit(phoneNumberEdit),
-      stackedWidget(stackedWidget)
+    : phoneNumberEdit(phoneNumberEdit), stackedWidget(stackedWidget)
 {
     setLayout(&mainLayout);
-    connect(this,SIGNAL(activateSignal()),this,SLOT(activateSlot()));
+    connect(this, SIGNAL(activateSignal()), this, SLOT(activateSlot()));
 }
 
 void QtUeModeWidget::addChildWidget(QWidget *childWidget)
@@ -48,4 +47,4 @@ void QtUeModeWidget::activate()
     emit activateSignal();
 }
 
-}
+} // namespace ue

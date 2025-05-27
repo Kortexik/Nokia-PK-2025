@@ -9,4 +9,4 @@ ITimerEventsHandlerMock::~ITimerEventsHandlerMock() = default;
 ITimerPortMock::ITimerPortMock() = default;
 ITimerPortMock::~ITimerPortMock() = default;
 
-}
+} // namespace ue

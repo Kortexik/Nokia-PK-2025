@@ -27,9 +27,9 @@ void QtCallMode::constructGUI()
 
 void QtCallMode::connectSignals()
 {
-    connect(&outgoingTextEdit, &QtSubmitTextEdit::submitted, [this](){ emit textEntered();});
-    connect(this,SIGNAL(appendTalkTextSignal(QString)),this,SLOT(appendTalkTextSlot(QString)));
-    connect(this,SIGNAL(activateForDialModeSignal()),this,SLOT(activateForDialModeSlot()));
+    connect(&outgoingTextEdit, &QtSubmitTextEdit::submitted, [this]() { emit textEntered(); });
+    connect(this, SIGNAL(appendTalkTextSignal(QString)), this, SLOT(appendTalkTextSlot(QString)));
+    connect(this, SIGNAL(activateForDialModeSignal()), this, SLOT(activateForDialModeSlot()));
 }
 
 void QtCallMode::activateSlot()
@@ -74,4 +74,4 @@ void QtCallMode::appendTalkTextSlot(QString text)
     incomingTextEdit.append(text);
 }
 
-}
+} // namespace ue

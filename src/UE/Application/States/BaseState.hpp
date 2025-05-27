@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Context.hpp"
 #include "IEventsHandler.hpp"
 #include "Logger/PrefixedLogger.hpp"
-#include "Context.hpp"
 #include "Messages/PhoneNumber.hpp"
 
 namespace ue
@@ -10,8 +10,8 @@ namespace ue
 
 class BaseState : public IEventsHandler
 {
-public:
-    BaseState(Context& context, const std::string& name);
+ public:
+    BaseState(Context &context, const std::string &name);
     ~BaseState() override;
 
     // ITimerEventsHandler interface
@@ -20,20 +20,25 @@ public:
     // IBtsEventsHandler interface
     void handleSib(common::BtsId btsId) override;
 
-    //IEventsHandler interface
+    // IEventsHandler interface
 
     void handleAttachAccept() override;
     void handleAttachReject() override;
     void handleDisconnected() override;
-    void handleSmsReceived(common::PhoneNumber fromNumber, const std::string& message) override;
+    void handleSmsReceived(common::PhoneNumber fromNumber, const std::string &message) override;
 
-    virtual void handleCallRequest(common::PhoneNumber from)  override {
-      logger.logDebug("Dropping a call in states that is not connected state");
-      context.bts.sendCallDrop(from);
+    virtual void handleCallRequest(common::PhoneNumber from) override
+    {
+        logger.logDebug("Dropping a call in states that is not connected state");
+        context.bts.sendCallDrop(from);
     }
 
-    virtual void handleCallAccepted(common::PhoneNumber) {}
-    virtual void handleCallDropped(common::PhoneNumber) {}
+    virtual void handleCallAccepted(common::PhoneNumber)
+    {
+    }
+    virtual void handleCallDropped(common::PhoneNumber)
+    {
+    }
 
     void handleSendCallDropped(common::PhoneNumber from) override;
     void handleReceivedCallTalk(const std::string &text) override;
@@ -41,9 +46,9 @@ public:
 
     virtual void handleMenuSelection(unsigned int index) override;
 
-protected:
-    Context& context;
+ protected:
+    Context &context;
     common::PrefixedLogger logger;
 };
 
-}
+} // namespace ue

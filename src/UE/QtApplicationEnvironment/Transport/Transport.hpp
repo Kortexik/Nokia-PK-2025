@@ -1,8 +1,8 @@
 #pragma once
 #include "ITransport.hpp"
-#include <memory>
-#include <QAbstractSocket>
 #include "Logger/PrefixedLogger.hpp"
+#include <QAbstractSocket>
+#include <memory>
 
 class QTcpSocket;
 class QNetworkSession;
@@ -15,30 +15,31 @@ class MultiLineConfig;
 namespace ue
 {
 
-class Transport: public QObject, public ITransport
+class Transport : public QObject, public ITransport
 {
     Q_OBJECT
 
-public slots:
-	void connectToServer();
-public:
-    Transport(common::MultiLineConfig& configuration, common::ILogger& logger);
+ public slots:
+    void connectToServer();
+
+ public:
+    Transport(common::MultiLineConfig &configuration, common::ILogger &logger);
     ~Transport();
     void registerMessageCallback(MessageCallback messageCallback) override;
     void registerDisconnectedCallback(DisconnectedCallback disconnectedCallback) override;
     bool sendMessage(BinaryMessage message) override;
     std::string addressToString() const override;
 
-private slots:
-    bool sendMessageSlot(const QByteArray & message);
-signals:
-    bool sendMessageSignal(const QByteArray & message);
+ private slots:
+    bool sendMessageSlot(const QByteArray &message);
+ signals:
+    bool sendMessageSignal(const QByteArray &message);
 
-private:
+ private:
     void readData();
     void handleError(QAbstractSocket::SocketError socketError);
     void handleClosingConnection();
-//    void connectToServer();
+    //    void connectToServer();
     bool isConnected() const;
     common::PrefixedLogger logger;
     int port;
@@ -49,4 +50,4 @@ private:
     DisconnectedCallback disconnectedCallback;
 };
 
-}
+} // namespace ue

@@ -10,12 +10,12 @@ namespace ue
 class QtCallMode;
 class QtPhoneNumberEdit;
 
-using ILogger=common::ILogger;
+using ILogger = common::ILogger;
 
 class QtDialMode : public IUeGui::IDialMode
 {
-public:
-    QtDialMode(QtCallMode& baseMode, QtPhoneNumberEdit& phoneNumberEdit);
+ public:
+    QtDialMode(QtCallMode &baseMode, QtPhoneNumberEdit &phoneNumberEdit);
     ~QtDialMode();
 
     void init();
@@ -23,9 +23,8 @@ public:
 
     PhoneNumber getPhoneNumber() const override;
 
-private:
-    QtCallMode& baseMode;
-    QtPhoneNumberEdit& phoneNumberEdit;
+ private:
+    QtCallMode &baseMode;
+    QtPhoneNumberEdit &phoneNumberEdit;
 };
-}
-
+} // namespace ue

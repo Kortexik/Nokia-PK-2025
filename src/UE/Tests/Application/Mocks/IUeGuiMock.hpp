@@ -1,12 +1,12 @@
 #pragma once
 
-#include <gmock/gmock.h>
 #include "IUeGui.hpp"
+#include "UeGui/ICallMode.hpp"
+#include "UeGui/IDialMode.hpp"
 #include "UeGui/IListViewMode.hpp"
 #include "UeGui/ISmsComposeMode.hpp"
-#include "UeGui/IDialMode.hpp"
-#include "UeGui/ICallMode.hpp"
 #include "UeGui/ITextMode.hpp"
+#include <gmock/gmock.h>
 
 namespace ue
 {
@@ -26,17 +26,17 @@ struct IUeGuiMock : public IUeGui
     MOCK_METHOD(void, showNewSms, (bool present), (final));
     MOCK_METHOD(void, showPeerUserNotAvailable, (common::PhoneNumber), (final));
 
-    MOCK_METHOD(IListViewMode&, setListViewMode, (), (final));
-    MOCK_METHOD(ISmsComposeMode&, setSmsComposeMode, (), (final));
-    MOCK_METHOD(IDialMode&, setDialMode, (), (final));
-    MOCK_METHOD(ICallMode&, setCallMode, (), (final));
-    MOCK_METHOD(ITextMode&, setAlertMode, (), (final));
-    MOCK_METHOD(ITextMode&, setViewTextMode, (), (final));
+    MOCK_METHOD(IListViewMode &, setListViewMode, (), (final));
+    MOCK_METHOD(ISmsComposeMode &, setSmsComposeMode, (), (final));
+    MOCK_METHOD(IDialMode &, setDialMode, (), (final));
+    MOCK_METHOD(ICallMode &, setCallMode, (), (final));
+    MOCK_METHOD(ITextMode &, setAlertMode, (), (final));
+    MOCK_METHOD(ITextMode &, setViewTextMode, (), (final));
 };
 
 class IListViewModeMock : public IUeGui::IListViewMode
 {
-public:
+ public:
     IListViewModeMock();
     ~IListViewModeMock() override;
 
@@ -47,7 +47,7 @@ public:
 
 class ITextModeMock : public IUeGui::ITextMode
 {
-public:
+ public:
     ITextModeMock();
     ~ITextModeMock() override;
 
@@ -56,7 +56,7 @@ public:
 
 class ISmsComposeModeMock : public IUeGui::ISmsComposeMode
 {
-public:
+ public:
     ISmsComposeModeMock();
     ~ISmsComposeModeMock() override;
 
@@ -67,7 +67,7 @@ public:
 
 class ICallModeMock : public IUeGui::ICallMode
 {
-public:
+ public:
     ICallModeMock();
     ~ICallModeMock() override;
 
@@ -79,11 +79,11 @@ public:
 
 class IDialModeMock : public IUeGui::IDialMode
 {
-public:
+ public:
     IDialModeMock();
     ~IDialModeMock() override;
 
     MOCK_METHOD(PhoneNumber, getPhoneNumber, (), (const, final));
 };
 
-}
+} // namespace ue

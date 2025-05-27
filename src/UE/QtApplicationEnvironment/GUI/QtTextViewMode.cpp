@@ -5,10 +5,12 @@ namespace ue
 {
 
 QtTextViewMode::QtTextViewMode(QtSmsComposeMode &baseMode) : baseMode(baseMode)
-{}
+{
+}
 
 void QtTextViewMode::init()
-{}
+{
+}
 
 void QtTextViewMode::activate()
 {
@@ -20,5 +22,4 @@ void QtTextViewMode::setText(const std::string &value)
     baseMode.setSmsText(value);
 }
 
-
-}
+} // namespace ue

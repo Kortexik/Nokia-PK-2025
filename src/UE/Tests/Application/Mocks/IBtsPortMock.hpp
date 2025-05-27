@@ -1,14 +1,14 @@
 #pragma once
 
-#include <gmock/gmock.h>
 #include "Ports/IBtsPort.hpp"
+#include <gmock/gmock.h>
 
 namespace ue
 {
 
 class IBtsEventsHandlerMock : public IBtsEventsHandler
 {
-public:
+ public:
     IBtsEventsHandlerMock();
     ~IBtsEventsHandlerMock() override;
 
@@ -20,12 +20,12 @@ public:
     MOCK_METHOD(void, handleCallAccepted, (common::PhoneNumber), (final));
     MOCK_METHOD(void, handleCallDropped, (common::PhoneNumber), (final));
     MOCK_METHOD(void, handleReceivedCallTalk, (const std::string &text), (final));
-    MOCK_METHOD(void, handleSmsReceived, (common::PhoneNumber fromNumber, const std::string& message), (override));
+    MOCK_METHOD(void, handleSmsReceived, (common::PhoneNumber fromNumber, const std::string &message), (override));
 };
 
 class IBtsPortMock : public IBtsPort
 {
-public:
+ public:
     IBtsPortMock();
     ~IBtsPortMock() override;
 
@@ -37,4 +37,4 @@ public:
     MOCK_METHOD(void, sendSmsMessage, (common::PhoneNumber to, const std::string &text), (final));
 };
 
-}
+} // namespace ue

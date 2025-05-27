@@ -2,10 +2,9 @@
 
 #include <QTextEdit>
 
-#include "UeGui/ICallMode.hpp"
 #include "QtSubmitTextEdit.hpp"
 #include "QtUeModeWidget.hpp"
-
+#include "UeGui/ICallMode.hpp"
 
 namespace ue
 {
@@ -13,9 +12,8 @@ namespace ue
 class QtCallMode : public QtUeModeWidget, public IUeGui::ICallMode
 {
     Q_OBJECT
-public:
-    QtCallMode(QtPhoneNumberEdit& phoneNumberEdit,
-               QtStackedWidget& stackedWidget);
+ public:
+    QtCallMode(QtPhoneNumberEdit &phoneNumberEdit, QtStackedWidget &stackedWidget);
 
     void activateForDialMode();
 
@@ -24,23 +22,22 @@ public:
     void clearOutgoingText() override;
     std::string getOutgoingText() const override;
 
-private:
+ private:
     void constructGUI();
     void connectSignals();
 
     QTextEdit incomingTextEdit;
     QtSubmitTextEdit outgoingTextEdit;
 
-signals:
+ signals:
     void activateForDialModeSignal();
     void appendTalkTextSignal(QString);
     void textEntered();
 
-private slots:
+ private slots:
     void activateSlot() override;
     void activateForDialModeSlot();
     void appendTalkTextSlot(QString text);
 };
 
-}
-
+} // namespace ue

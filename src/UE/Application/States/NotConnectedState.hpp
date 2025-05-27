@@ -7,8 +7,8 @@ namespace ue
 
 class NotConnectedState : public BaseState
 {
-public:
-    NotConnectedState(Context& context);
+ public:
+    NotConnectedState(Context &context);
     void handleSib(common::BtsId) final;
 
     void handleAccept() override;
@@ -18,5 +18,4 @@ public:
     void handleAttachAccept() override;
     void handleAttachReject() override;
 };
-}
-
+} // namespace ue

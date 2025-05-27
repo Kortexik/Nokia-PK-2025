@@ -1,19 +1,19 @@
 #pragma once
 
-#include <gmock/gmock-function-mocker.h>
-#include <gmock/gmock.h>
 #include "Messages/PhoneNumber.hpp"
 #include "Ports/IUserPort.hpp"
+#include <gmock/gmock-function-mocker.h>
+#include <gmock/gmock.h>
 
 namespace ue
 {
 
 class IUserEventsHandlerMock : public IUserEventsHandler
 {
-public:
+ public:
     IUserEventsHandlerMock();
     ~IUserEventsHandlerMock() override;
-    
+
     MOCK_METHOD(void, handleAccept, (), (final));
     MOCK_METHOD(void, handleReject, (), (final));
     MOCK_METHOD(void, handleDial, (common::PhoneNumber to), (final));
@@ -24,7 +24,7 @@ public:
 
 class IUserPortMock : public IUserPort
 {
-public:
+ public:
     IUserPortMock();
     ~IUserPortMock() override;
 
@@ -44,7 +44,7 @@ public:
     MOCK_METHOD(void, showNewSms, (bool present), (final));
     MOCK_METHOD(void, displaySmsCompose, (), (final));
     MOCK_METHOD(Sms, getSmsComposeData, (), (final));
-    MOCK_METHOD(void, displaySmsContent, (Sms& sms), (final));
-    MOCK_METHOD(void, displaySmsList, (const std::vector<Sms>& messages), (final));
+    MOCK_METHOD(void, displaySmsContent, (Sms & sms), (final));
+    MOCK_METHOD(void, displaySmsList, (const std::vector<Sms> &messages), (final));
 };
-}
+} // namespace ue

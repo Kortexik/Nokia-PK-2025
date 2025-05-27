@@ -2,9 +2,9 @@
 
 #include "IUeGui.hpp"
 
+#include <QKeyEvent>
 #include <QObject>
 #include <QTextEdit>
-#include <QKeyEvent>
 
 #include "Logger/ILogger.hpp"
 
@@ -14,11 +14,11 @@ namespace ue
 class QtSubmitTextEdit : public QTextEdit
 {
     Q_OBJECT
-signals:
+ signals:
     void submitted();
-public:
+
+ public:
     void keyPressEvent(QKeyEvent *event) override;
 };
 
-}
-
+} // namespace ue

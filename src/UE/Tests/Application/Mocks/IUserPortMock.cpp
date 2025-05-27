@@ -8,5 +8,4 @@ IUserEventsHandlerMock::~IUserEventsHandlerMock() = default;
 IUserPortMock::IUserPortMock() = default;
 IUserPortMock::~IUserPortMock() = default;
 
-
-}
+} // namespace ue

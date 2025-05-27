@@ -16,7 +16,7 @@ void QtAlertMode::constructGUI()
     QPalette labelPalette{};
     labelPalette.setColor(QPalette::Dark, Qt::red);
     labelPalette.setColor(QPalette::WindowText, Qt::red);
-    QFont labelFont( "Arial Narrow", 20);
+    QFont labelFont("Arial Narrow", 20);
 
     alertText.setAlignment(Qt::AlignCenter);
     alertText.setPalette(labelPalette);
@@ -28,7 +28,7 @@ void QtAlertMode::constructGUI()
 
 void QtAlertMode::connectSignals()
 {
-    QObject::connect(this,SIGNAL(setTextSignal(QString)),this,SLOT(setTextSlot(QString)));
+    QObject::connect(this, SIGNAL(setTextSignal(QString)), this, SLOT(setTextSlot(QString)));
 }
 
 void QtAlertMode::activateSlot()
@@ -46,4 +46,4 @@ void QtAlertMode::setTextSlot(QString text)
     alertText.setText(text);
 }
 
-}
+} // namespace ue

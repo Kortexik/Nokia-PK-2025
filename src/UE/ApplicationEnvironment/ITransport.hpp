@@ -5,7 +5,7 @@
 namespace ue
 {
 
-using common::ITransport;
 using common::BinaryMessage;
+using common::ITransport;
 
-}
+} // namespace ue

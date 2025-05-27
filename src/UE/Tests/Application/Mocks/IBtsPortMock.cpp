@@ -8,5 +8,4 @@ IBtsEventsHandlerMock::~IBtsEventsHandlerMock() = default;
 IBtsPortMock::IBtsPortMock() = default;
 IBtsPortMock::~IBtsPortMock() = default;
 
-
-}
+} // namespace ue
