@@ -62,7 +62,7 @@ void QtSelectionListMode::activateSlot()
     activateWithPhoneNumberEditDisabled();
 }
 
-IUeGui::IListViewMode::OptionalSelection QtSelectionListMode::getCurrentItemIndex() const
+IUeGui::IListViewMode::OptionalSelection QtSelectionListMode::  getCurrentItemIndex() const
 {
     auto currentItem = listWidget.currentItem();
     if (currentItem)

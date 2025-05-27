@@ -12,8 +12,10 @@ _deps
 .idea/
 
 build
-src/cmake-build-default-remote-host/
 
+src/cmake-build*
+.vscode/
 *.a
 *.o
 *_autogen
+.cache

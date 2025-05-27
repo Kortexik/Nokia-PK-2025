@@ -4,6 +4,7 @@
 #include "Logger/PrefixedLogger.hpp"
 #include "ITransport.hpp"
 #include "Messages/PhoneNumber.hpp"
+#include "Sms.hpp"
 
 namespace ue
 {
@@ -16,8 +17,14 @@ public:
     void stop();
 
     void sendAttachRequest(common::BtsId) override;
+    void sendCallAccepted(common::PhoneNumber to) override;
+    void sendCallDrop(common::PhoneNumber to) override;
+    void sendCallTalk(common::PhoneNumber to, const std::string &text) override;
+    void sendCallRequest(common::PhoneNumber to) override;
+    void sendSmsMessage(common::PhoneNumber to, const std::string &text) override;
 
 private:
+    void handleDisconnected() const;
     void handleMessage(BinaryMessage msg);
 
     common::PrefixedLogger logger;

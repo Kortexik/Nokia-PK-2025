@@ -16,9 +16,16 @@ jobs:
         working-directory: src
         
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    
+    - name: Clean Qt directory
+      run: |
+        if [ -d "/home/runner/work/Nokia-PK-2025/Qt/" ]; then
+          rm -rf /home/runner/work/Nokia-PK-2025/Qt/
+        fi
+        
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v3
     - name: cmake
       run: cmake .
     - name: make all targets
@@ -33,9 +40,15 @@ jobs:
     - name: UT for COMMON
       run: make COMMON_UT
 
+    - name: run COMMON ut
+      run: ./COMMON/Tests/COMMON_UT
+
     - name: UT for UeApplication
       run: make UeApplicationUT
 
+    - name: run UEApplication ut
+      run: ./UE/Tests/Application/UeApplicationUT
+      
     - name: Next Steps
       run: echo "Add your next steps here"
 
