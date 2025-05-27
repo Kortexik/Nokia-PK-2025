@@ -1,17 +1,13 @@
 #include "Application.hpp"
-#include "States/NotConnectedState.hpp"
 #include "States/ConnectedState.hpp"
+#include "States/NotConnectedState.hpp"
 
 namespace ue
 {
 
-Application::Application(common::PhoneNumber phoneNumber,
-                         common::ILogger &iLogger,
-                         IBtsPort &bts,
-                         IUserPort &user,
+Application::Application(common::PhoneNumber phoneNumber, common::ILogger &iLogger, IBtsPort &bts, IUserPort &user,
                          ITimerPort &timer)
-    : context{iLogger, bts, user, timer},
-      logger(iLogger, "[APP] ")
+    : context{iLogger, bts, user, timer}, logger(iLogger, "[APP] ")
 {
     logger.logInfo("Started");
     context.setState<NotConnectedState>();
@@ -42,11 +38,12 @@ void Application::handleAttachReject()
     context.state->handleAttachReject();
 }
 
-void Application::handleDisconnected() {
+void Application::handleDisconnected()
+{
     context.state->handleDisconnected();
 }
 
-void Application::handleSmsReceived(common::PhoneNumber from, const std::string& message)
+void Application::handleSmsReceived(common::PhoneNumber from, const std::string &message)
 {
     context.state->handleSmsReceived(from, message);
 }
@@ -80,7 +77,7 @@ void Application::handleMenuSelection(unsigned int index)
     context.state->handleMenuSelection(index);
 }
 
-void Application::handleReceivedCallTalk(const std::string& text)
+void Application::handleReceivedCallTalk(const std::string &text)
 {
     context.state->handleReceivedCallTalk(text);
 }
@@ -90,7 +87,8 @@ void Application::handleSendCallTalk(common::PhoneNumber to, const std::string &
     context.state->handleSendCallTalk(to, msg);
 }
 
-void Application::handleSendCallDropped(common::PhoneNumber from){
+void Application::handleSendCallDropped(common::PhoneNumber from)
+{
     context.state->handleSendCallDropped(from);
 }
 
@@ -99,4 +97,4 @@ void Application::handleDial(common::PhoneNumber to)
     context.state->handleDial(to);
 }
 
-}
+} // namespace ue

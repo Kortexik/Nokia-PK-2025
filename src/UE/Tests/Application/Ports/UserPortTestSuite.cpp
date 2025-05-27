@@ -1,11 +1,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "Ports/UserPort.hpp"
-#include "Mocks/ILoggerMock.hpp"
-#include "Mocks/IUserPortMock.hpp"
 #include "Messages/PhoneNumber.hpp"
+#include "Mocks/ILoggerMock.hpp"
 #include "Mocks/IUeGuiMock.hpp"
+#include "Mocks/IUserPortMock.hpp"
+#include "Ports/UserPort.hpp"
 
 namespace ue
 {
@@ -13,7 +13,7 @@ using namespace ::testing;
 
 class UserPortTestSuite : public Test
 {
-protected:
+ protected:
     const common::PhoneNumber PHONE_NUMBER{112};
     NiceMock<common::ILoggerMock> loggerMock;
     StrictMock<IUserEventsHandlerMock> handlerMock;
@@ -59,4 +59,4 @@ TEST_F(UserPortTestSuite, shallShowMenuOnConnected)
     objectUnderTest.showConnected();
 }
 
-}
+} // namespace ue

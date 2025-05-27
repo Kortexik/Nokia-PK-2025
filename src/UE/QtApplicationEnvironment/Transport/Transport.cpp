@@ -1,20 +1,18 @@
 #include "Transport.hpp"
+#include "Config/MultiLineConfig.hpp"
+#include "Messages/IncomingMessage.hpp"
+#include "Messages/OutgoingMessage.hpp"
 #include <QTcpSocket>
 #include <QtNetwork>
-#include <string>
-#include "Config/MultiLineConfig.hpp"
-#include "Messages/OutgoingMessage.hpp"
-#include "Messages/IncomingMessage.hpp"
 #include <functional>
+#include <string>
 
 namespace ue
 {
 
-Transport::Transport(common::MultiLineConfig& configuration, common::ILogger &loggerBase)
-    : logger(loggerBase, "[TRANSPORT]"),
-      port(configuration.getNumber("port", 8181)),
-      server(configuration.getString("server", "localhost")),
-      socket(new QTcpSocket())
+Transport::Transport(common::MultiLineConfig &configuration, common::ILogger &loggerBase)
+    : logger(loggerBase, "[TRANSPORT]"), port(configuration.getNumber("port", 8181)),
+      server(configuration.getString("server", "localhost")), socket(new QTcpSocket())
 {
     logger.logDebug("Selected configuration ", server, ":", port);
 
@@ -23,7 +21,7 @@ Transport::Transport(common::MultiLineConfig& configuration, common::ILogger &lo
     {
         logger.logDebug("Session needed");
         session.reset(new QNetworkSession(manager.defaultConfiguration()));
-        QObject::connect(session.get(), &QNetworkSession::opened, [this] () {this->connectToServer();});
+        QObject::connect(session.get(), &QNetworkSession::opened, [this]() { this->connectToServer(); });
 
         session->open();
     }
@@ -31,12 +29,13 @@ Transport::Transport(common::MultiLineConfig& configuration, common::ILogger &lo
     {
         connectToServer();
     }
-    void (QTcpSocket::* errorSignal) (QAbstractSocket::SocketError) = &QTcpSocket::error;
-    QObject::connect(socket.get(), errorSignal, [this](auto socketError) {this->handleError(socketError);});
-    QObject::connect(socket.get(), &QTcpSocket::readyRead, [this](){this->readData();});
-    QObject::connect(socket.get(), &QAbstractSocket::disconnected, std::bind(&Transport::handleClosingConnection, this));
+    void (QTcpSocket::*errorSignal)(QAbstractSocket::SocketError) = &QTcpSocket::error;
+    QObject::connect(socket.get(), errorSignal, [this](auto socketError) { this->handleError(socketError); });
+    QObject::connect(socket.get(), &QTcpSocket::readyRead, [this]() { this->readData(); });
+    QObject::connect(socket.get(), &QAbstractSocket::disconnected,
+                     std::bind(&Transport::handleClosingConnection, this));
 
-    connect(this, SIGNAL(sendMessageSignal(QByteArray)), this, SLOT(sendMessageSlot(QByteArray)),Qt::QueuedConnection);
+    connect(this, SIGNAL(sendMessageSignal(QByteArray)), this, SLOT(sendMessageSlot(QByteArray)), Qt::QueuedConnection);
 }
 
 void Transport::connectToServer()
@@ -46,7 +45,7 @@ void Transport::connectToServer()
 
 bool Transport::sendMessageSlot(const QByteArray &message)
 {
-    if(not isConnected())
+    if (not isConnected())
     {
         logger.logError("Could not send message, connection not established");
         return false;
@@ -84,14 +83,14 @@ bool Transport::sendMessage(BinaryMessage message)
     BinaryMessage size = sizeEncoder.getMessage();
 
     QByteArray array{};
-    array.append(reinterpret_cast<char*>(size.value.data()), size.value.size());
-    array.append(reinterpret_cast<char*>(message.value.data()), message.value.size());
+    array.append(reinterpret_cast<char *>(size.value.data()), size.value.size());
+    array.append(reinterpret_cast<char *>(message.value.data()), message.value.size());
     return emit sendMessageSignal(array);
 }
 
 std::string Transport::addressToString() const
 {
-    if(not isConnected())
+    if (not isConnected())
     {
         return "NotConnected";
     }
@@ -104,20 +103,19 @@ void Transport::readData()
     quint64 bytesAvailable;
     while ((bytesAvailable = socket->bytesAvailable()) >= sizeSize)
     {
-        BinaryMessage sizeEncoded{ BinaryMessage::Value(sizeSize) };
-        socket->read(reinterpret_cast<char*>(sizeEncoded.value.data()), sizeSize);
+        BinaryMessage sizeEncoded{BinaryMessage::Value(sizeSize)};
+        socket->read(reinterpret_cast<char *>(sizeEncoded.value.data()), sizeSize);
         common::IncomingMessage sizeDecoder(sizeEncoded);
         BinaryMessage::SizeType messageLength = sizeDecoder.readNumber<BinaryMessage::SizeType>();
 
         if (bytesAvailable < sizeSize + messageLength)
         {
-            logger.logError("Wrong size: ", std::size_t(messageLength),
-                            " - available bytes: ", bytesAvailable);
+            logger.logError("Wrong size: ", std::size_t(messageLength), " - available bytes: ", bytesAvailable);
             continue;
         }
 
-        BinaryMessage message{ BinaryMessage::Value(messageLength) };
-        socket->read(reinterpret_cast<char*>(message.value.data()), messageLength);
+        BinaryMessage message{BinaryMessage::Value(messageLength)};
+        socket->read(reinterpret_cast<char *>(message.value.data()), messageLength);
         if (messageCallback)
         {
             messageCallback(std::move(message));
@@ -129,20 +127,20 @@ void Transport::handleError(QAbstractSocket::SocketError socketError)
 {
     switch (socketError)
     {
-        case QAbstractSocket::RemoteHostClosedError:
-            logger.logError("Connection lost");
-            break;
-        case QAbstractSocket::HostNotFoundError:
-            logger.logError("Host not found");
-            break;
-        case QAbstractSocket::ConnectionRefusedError:
-            logger.logError("Connection refused by peer");
-            break;
-        default:
-            logger.logError(socket->errorString().toStdString());
+    case QAbstractSocket::RemoteHostClosedError:
+        logger.logError("Connection lost");
+        break;
+    case QAbstractSocket::HostNotFoundError:
+        logger.logError("Host not found");
+        break;
+    case QAbstractSocket::ConnectionRefusedError:
+        logger.logError("Connection refused by peer");
+        break;
+    default:
+        logger.logError(socket->errorString().toStdString());
     }
-    //QTimer::singleShot(10000,[this](){this->connectToServer();});
-     QTimer::singleShot(10000, this, SLOT(connectToServer()));
+    // QTimer::singleShot(10000,[this](){this->connectToServer();});
+    QTimer::singleShot(10000, this, SLOT(connectToServer()));
 }
 
 void Transport::handleClosingConnection()
@@ -158,4 +156,4 @@ void Transport::handleClosingConnection()
     }
 }
 
-}
+} // namespace ue

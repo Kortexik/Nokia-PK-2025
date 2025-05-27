@@ -1,15 +1,15 @@
 #pragma once
 
 #include "Messages/PhoneNumber.hpp"
-#include <vector>
 #include "Sms.hpp"
+#include <vector>
 
 namespace ue
 {
 
 class IUserEventsHandler
 {
-public:
+ public:
     virtual ~IUserEventsHandler() = default;
 
     virtual void handleAccept() = 0;
@@ -22,7 +22,7 @@ public:
 
 class IUserPort
 {
-public:
+ public:
     virtual ~IUserPort() = default;
 
     virtual void showNotConnected() = 0;
@@ -30,8 +30,8 @@ public:
     virtual void showConnected() = 0;
     virtual void displaySmsCompose() = 0;
     virtual Sms getSmsComposeData() = 0;
-    virtual void displaySmsContent(Sms& sms) = 0;
-    virtual void displaySmsList(const std::vector<Sms>& messages) = 0;
+    virtual void displaySmsContent(Sms &sms) = 0;
+    virtual void displaySmsList(const std::vector<Sms> &messages) = 0;
     virtual void showNewSms(bool present) = 0;
 
     virtual void showCallRequest(common::PhoneNumber from) = 0;
@@ -45,4 +45,4 @@ public:
     virtual void waitingForCallRespond(common::PhoneNumber to) = 0;
 };
 
-}
+} // namespace ue

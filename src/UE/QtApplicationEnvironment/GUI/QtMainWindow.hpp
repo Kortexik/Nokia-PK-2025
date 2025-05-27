@@ -1,9 +1,9 @@
 #pragma once
 
 #include "IUeGui.hpp"
-#include <QMainWindow>
-#include <QKeyEvent>
 #include "Logger/ILogger.hpp"
+#include <QKeyEvent>
+#include <QMainWindow>
 
 namespace ue
 {
@@ -11,15 +11,14 @@ namespace ue
 class QtMainWindow : public QMainWindow
 {
     Q_OBJECT
-public:
+ public:
     QtMainWindow();
     void setCloseGuard(const IUeGui::CloseGuard &value);
-    void closeEvent(QCloseEvent* event) override;
+    void closeEvent(QCloseEvent *event) override;
 
-private:
+ private:
     IUeGui::CloseGuard closeGuard;
     bool closeAccepted();
 };
 
-}
-
+} // namespace ue

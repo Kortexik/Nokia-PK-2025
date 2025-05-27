@@ -4,10 +4,9 @@
 namespace ue
 {
 
-std::unique_ptr<IApplicationEnvironment> createApplicationEnvironment(int &argc, char* argv[])
+std::unique_ptr<IApplicationEnvironment> createApplicationEnvironment(int &argc, char *argv[])
 {
     return std::make_unique<ApplicationEnvironment>(argc, argv);
 }
 
-}
-
+} // namespace ue

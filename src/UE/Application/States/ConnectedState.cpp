@@ -7,8 +7,7 @@
 namespace ue
 {
 
-ConnectedState::ConnectedState(Context &context)
-    : BaseState(context, "ConnectedState")
+ConnectedState::ConnectedState(Context &context) : BaseState(context, "ConnectedState")
 {
     context.user.showConnected();
     context.user.showNewSms(context.smsDb.getUnreadCount() > 0);
@@ -18,7 +17,7 @@ void ConnectedState::handleDisconnected()
     context.setState<NotConnectedState>();
 }
 
-void ConnectedState::handleSmsReceived(common::PhoneNumber from, const std::string& message)
+void ConnectedState::handleSmsReceived(common::PhoneNumber from, const std::string &message)
 {
     context.smsDb.addReceivedSms(from, message);
     logger.logInfo("Received SMS from:", from, "with message:", message);
@@ -27,7 +26,8 @@ void ConnectedState::handleSmsReceived(common::PhoneNumber from, const std::stri
 
 void ConnectedState::handleTimeout()
 {
-    if (callingNumber.isValid()) {
+    if (callingNumber.isValid())
+    {
         logger.logDebug("Call request timed out");
         context.bts.sendCallDrop(callingNumber);
         context.user.showCallDropped(callingNumber);
@@ -45,11 +45,11 @@ void ConnectedState::handleAccept()
 
 void ConnectedState::handleReject()
 {
-        logger.logDebug("Rejecting call from: ", callingNumber);
-        context.timer.stopTimer();
-        context.bts.sendCallDrop(callingNumber);
-        callingNumber = common::PhoneNumber{};
-        context.user.showConnected();
+    logger.logDebug("Rejecting call from: ", callingNumber);
+    context.timer.stopTimer();
+    context.bts.sendCallDrop(callingNumber);
+    callingNumber = common::PhoneNumber{};
+    context.user.showConnected();
 }
 
 void ConnectedState::handleMenuSelection(unsigned int index)
@@ -83,18 +83,21 @@ void ConnectedState::handleDial(common::PhoneNumber to)
 }
 
 void ConnectedState::handleCallRequest(common::PhoneNumber from)
+{
+    if (!callingNumber.isValid())
     {
-        if (!callingNumber.isValid()) {
-            callingNumber = from;
-            context.user.showCallRequest(from);
-            context.timer.startTimer(std::chrono::milliseconds(30000)); 
-        }
-        else {
-            context.bts.sendCallDrop(from);
-        }
+        callingNumber = from;
+        context.user.showCallRequest(from);
+        context.timer.startTimer(std::chrono::milliseconds(30000));
     }
+    else
+    {
+        context.bts.sendCallDrop(from);
+    }
+}
 
-void ConnectedState::handleCallDropped(common::PhoneNumber from) {
+void ConnectedState::handleCallDropped(common::PhoneNumber from)
+{
     logger.logDebug("Call rejected by: ", from);
     context.user.showCallDropped(from);
     callingNumber = common::PhoneNumber{};
@@ -103,15 +106,16 @@ void ConnectedState::handleCallDropped(common::PhoneNumber from) {
 void ConnectedState::handleCallAccepted(common::PhoneNumber from)
 {
     context.timer.stopTimer();
-    if (from == callingNumber) {
+    if (from == callingNumber)
+    {
         context.setState<TalkingState>(from);
     }
 }
 
-
-void ConnectedState::handleSendCallDropped(common::PhoneNumber from){
+void ConnectedState::handleSendCallDropped(common::PhoneNumber from)
+{
     context.timer.stopTimer();
     context.bts.sendCallDrop(from);
     context.user.showConnected();
 }
-}
+} // namespace ue

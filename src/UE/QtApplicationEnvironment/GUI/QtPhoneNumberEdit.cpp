@@ -1,23 +1,22 @@
 #include "QtPhoneNumberEdit.hpp"
 
-#include <QPalette>
 #include <QFont>
 #include <QIntValidator>
+#include <QPalette>
 
 namespace ue
 {
 
 QtPhoneNumberEdit::QtPhoneNumberEdit()
 {
-    setFont(QFont( "Arial Narrow", 16));
-    setValidator( new QIntValidator(PhoneNumber::MIN_VALUE, PhoneNumber::MAX_VALUE, this));
+    setFont(QFont("Arial Narrow", 16));
+    setValidator(new QIntValidator(PhoneNumber::MIN_VALUE, PhoneNumber::MAX_VALUE, this));
     setMaxLength(PhoneNumber::DIGITS);
     setStyleSheet("background-color:rgba( 255, 255, 255, 0% );");
 }
 
 QtPhoneNumberEdit::~QtPhoneNumberEdit()
 {
-
 }
 
 PhoneNumber QtPhoneNumberEdit::getPhoneNumber() const
@@ -42,4 +41,4 @@ void QtPhoneNumberEdit::disable()
     setStyleSheet("QLineEdit {background-color: #ababab;}");
 }
 
-}
+} // namespace ue

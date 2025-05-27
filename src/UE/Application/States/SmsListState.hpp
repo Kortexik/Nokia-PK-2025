@@ -7,11 +7,11 @@ namespace ue
 
 class SmsListState : public ue::ConnectedState
 {
-public:
+ public:
     SmsListState(Context &context);
     void handleReject() override;
     void handleMenuSelection(unsigned int index) override;
-    void handleSmsReceived(common::PhoneNumber from, const std::string& message) override;
+    void handleSmsReceived(common::PhoneNumber from, const std::string &message) override;
 };
 
-}
+} // namespace ue

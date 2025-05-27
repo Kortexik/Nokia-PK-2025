@@ -7,7 +7,7 @@ namespace ue
 
 class IUeGui::ICallMode
 {
-public:
+ public:
     virtual ~ICallMode() = default;
 
     virtual void appendIncomingText(const std::string &text) = 0;
@@ -16,4 +16,4 @@ public:
     virtual std::string getOutgoingText() const = 0;
 };
 
-}
+} // namespace ue

@@ -18,9 +18,9 @@ void QtSmsComposeMode::constructGUI()
 
 void QtSmsComposeMode::connectSignals()
 {
-    connect(this,SIGNAL(setSmsTextSignal(QString)),this,SLOT(setSmsTextSlot(QString)));
-    connect(this,SIGNAL(clearSmsTextSignal()),this,SLOT(clearSmsTextSlot()));
-    connect(this,SIGNAL(activateForViewingSmsSignal()),this,SLOT(activateForViewingSmsSlot()));
+    connect(this, SIGNAL(setSmsTextSignal(QString)), this, SLOT(setSmsTextSlot(QString)));
+    connect(this, SIGNAL(clearSmsTextSignal()), this, SLOT(clearSmsTextSlot()));
+    connect(this, SIGNAL(activateForViewingSmsSignal()), this, SLOT(activateForViewingSmsSlot()));
 }
 
 void QtSmsComposeMode::activateSlot()
@@ -75,4 +75,4 @@ void QtSmsComposeMode::setSmsText(const std::string &value)
     emit setSmsTextSignal(QString::fromStdString(value));
 }
 
-}
+} // namespace ue

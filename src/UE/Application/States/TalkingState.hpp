@@ -7,8 +7,8 @@ namespace ue
 
 class TalkingState : public ConnectedState
 {
-public:
-    TalkingState(Context& context, common::PhoneNumber callingNumber);
+ public:
+    TalkingState(Context &context, common::PhoneNumber callingNumber);
 
     void handleAccept() override;
     void handleReject() override;
@@ -21,8 +21,9 @@ public:
     void handleSendCallTalk(common::PhoneNumber to, const std::string &msg) override;
     void handleReceivedCallTalk(const std::string &text) override;
     void handleSendCallDropped(common::PhoneNumber from) override;
-private:
+
+ private:
     common::PhoneNumber callingNumber;
 };
 
-}
+} // namespace ue

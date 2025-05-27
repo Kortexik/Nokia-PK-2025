@@ -1,11 +1,11 @@
+#include "Messages.hpp"
 #include <ApplicationEnvironment.hpp>
-#include <string>
-#include <iostream>
 #include <chrono>
 #include <ctime>
-#include <iomanip>
 #include <fstream>
-#include "Messages.hpp"
+#include <iomanip>
+#include <iostream>
+#include <string>
 
 namespace ue
 {
@@ -13,7 +13,7 @@ namespace ue
 namespace
 {
 
-std::string getPhoneNumberPrefix(PhoneNumber const& phoneNumber)
+std::string getPhoneNumberPrefix(PhoneNumber const &phoneNumber)
 {
     return " [phone:" + to_string(phoneNumber) + "]";
 }
@@ -32,24 +32,20 @@ std::string logFilename(PhoneNumber phoneNumber)
 
 } // namespace
 
-ApplicationEnvironment::ApplicationEnvironment(int& argc, char* argv[])
+ApplicationEnvironment::ApplicationEnvironment(int &argc, char *argv[])
     : configuration(ApplicationEnvironment::readConfiguration(argc, argv)),
       myPhoneNumber(PhoneNumber{configuration->getNumber<decltype(PhoneNumber::value)>("phone", 123)}),
-      logFile(logFilename(myPhoneNumber)),
-      loggerBase(logFile),
-      logger(loggerBase, getPhoneNumberPrefix(myPhoneNumber)),
-      qApplication(argc, argv),
-      gui(logger),
-      transport(*configuration, logger)
+      logFile(logFilename(myPhoneNumber)), loggerBase(logFile), logger(loggerBase, getPhoneNumberPrefix(myPhoneNumber)),
+      qApplication(argc, argv), gui(logger), transport(*configuration, logger)
 {
 }
 
-ue::IUeGui& ApplicationEnvironment::getUeGui()
+ue::IUeGui &ApplicationEnvironment::getUeGui()
 {
     return gui;
 }
 
-ue::ITransport& ApplicationEnvironment::getTransportToBts()
+ue::ITransport &ApplicationEnvironment::getTransportToBts()
 {
     return transport;
 }
@@ -82,7 +78,8 @@ std::unique_ptr<common::MultiLineConfig> ApplicationEnvironment::readConfigurati
     }
     catch (...)
     {
-        std::clog << "Note: config file: \"" << configFile << "\" is not present or reading failure.\n\t((only command line arguments are used))" << std::endl;
+        std::clog << "Note: config file: \"" << configFile
+                  << "\" is not present or reading failure.\n\t((only command line arguments are used))" << std::endl;
     }
     return commandLineConfig;
 }
@@ -92,9 +89,9 @@ PhoneNumber ApplicationEnvironment::getMyPhoneNumber() const
     return myPhoneNumber;
 }
 
-std::int32_t ApplicationEnvironment::getProperty(std::string const& name, std::int32_t defaultValue) const
+std::int32_t ApplicationEnvironment::getProperty(std::string const &name, std::int32_t defaultValue) const
 {
     return configuration->getNumber<std::int32_t>(name, defaultValue);
 }
 
-}
+} // namespace ue

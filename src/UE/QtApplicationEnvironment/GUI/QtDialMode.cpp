@@ -7,13 +7,16 @@ namespace ue
 
 QtDialMode::QtDialMode(QtCallMode &baseMode, QtPhoneNumberEdit &phoneNumberEdit)
     : baseMode(baseMode), phoneNumberEdit(phoneNumberEdit)
-{}
+{
+}
 
 QtDialMode::~QtDialMode()
-{}
+{
+}
 
 void QtDialMode::init()
-{}
+{
+}
 
 void QtDialMode::activate()
 {
@@ -25,4 +28,4 @@ PhoneNumber QtDialMode::getPhoneNumber() const
     return phoneNumberEdit.getPhoneNumber();
 }
 
-}
+} // namespace ue
