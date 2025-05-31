@@ -2,11 +2,13 @@
 #include <gtest/gtest.h>
 
 #include "Application.hpp"
-#include "Mocks/ILoggerMock.hpp"
-#include "Mocks/IBtsPortMock.hpp"
-#include "Mocks/IUserPortMock.hpp"
-#include "Mocks/ITimerPortMock.hpp"
 #include "Messages/PhoneNumber.hpp"
+#include "Mocks/IBtsPortMock.hpp"
+#include "Mocks/ILoggerMock.hpp"
+#include "Mocks/IMockSmsDb.hpp"
+#include "Mocks/ITimerPortMock.hpp"
+#include "Mocks/IUserPortMock.hpp"
+
 #include <memory>
 
 namespace ue
@@ -22,6 +24,7 @@ protected:
     StrictMock<IBtsPortMock> btsPortMock;
     StrictMock<IUserPortMock> userPortMock;
     StrictMock<ITimerPortMock> timerPortMock;
+    StrictMock<IMockSmsDb> smsDbMock;
 
     std::unique_ptr<Application> objectUnderTest;
 
@@ -29,8 +32,10 @@ protected:
     {
         EXPECT_CALL(userPortMock, showNotConnected());
 
-        objectUnderTest = std::make_unique<Application>(PHONE_NUMBER, loggerMock, btsPortMock, userPortMock, timerPortMock
-        );
+        objectUnderTest = std::make_unique<Application>(
+    PHONE_NUMBER, loggerMock, btsPortMock, userPortMock, timerPortMock, smsDbMock
+    );
+
     }
 };
 
@@ -78,7 +83,7 @@ TEST_F(ApplicationConnectingTestSuite, shallConnectOnAttachAccept)
     EXPECT_CALL(timerPortMock, stopTimer());
     EXPECT_CALL(userPortMock, showConnected());
     EXPECT_CALL(userPortMock, showNewSms(_)).Times(AtLeast(1));
-
+    EXPECT_CALL(smsDbMock, getUnreadCount());
     objectUnderTest->handleAttachAccept();
 }
 
@@ -102,6 +107,7 @@ struct ApplicationConnectedTestSuite : ApplicationConnectingTestSuite
         EXPECT_CALL(timerPortMock, stopTimer());
         EXPECT_CALL(userPortMock, showConnected()).Times(AtLeast(1));
         EXPECT_CALL(userPortMock, showNewSms(_)).Times(AtLeast(1));
+        EXPECT_CALL(smsDbMock, getUnreadCount()).Times(AtLeast(1));
 
         objectUnderTest->handleAttachAccept();
     }
@@ -177,6 +183,117 @@ TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconnected)
     EXPECT_CALL(userPortMock, setCallMode(REMOTE_PHONE_NUMBER));
     EXPECT_CALL(timerPortMock, startTimer(120000ms));
     objectUnderTest->handleAccept();
+}
+
+//SMS
+struct ApplicationSmsTestSuite : ApplicationConnectedTestSuite
+{
+    void SetUp() override
+    {
+        EXPECT_CALL(smsDbMock, getUnreadCount()).WillRepeatedly(Return(0));
+        ApplicationConnectedTestSuite::SetUp();
+    }
+
+};
+
+TEST_F(ApplicationSmsTestSuite, shallChangeStateToSmsCompose)
+{
+    EXPECT_CALL(userPortMock, displaySmsCompose());
+    objectUnderTest->handleMenuSelection(0);
+}
+
+TEST_F(ApplicationSmsTestSuite, shallSendSmsToUe)
+{
+    EXPECT_CALL(userPortMock, displaySmsCompose());
+    objectUnderTest->handleMenuSelection(0);
+
+    EXPECT_CALL(userPortMock, getSmsComposeData())
+        .WillOnce(Return(Sms{PHONE_NUMBER, "Test message", Sms::Status::SENT}));
+
+    EXPECT_CALL(smsDbMock, addSentSms(PHONE_NUMBER, "Test message"));
+    EXPECT_CALL(btsPortMock, sendSmsMessage(PHONE_NUMBER, "Test message"));
+    EXPECT_CALL(userPortMock, showConnected());
+    EXPECT_CALL(userPortMock, showNewSms(_));
+
+    objectUnderTest->handleAccept();
+}
+
+
+TEST_F(ApplicationSmsTestSuite, shallCloseSmsComposeState)
+{
+    EXPECT_CALL(userPortMock, displaySmsCompose());
+    objectUnderTest->handleMenuSelection(0);
+
+    EXPECT_CALL(userPortMock, showConnected());
+    EXPECT_CALL(userPortMock, showNewSms(_));
+    objectUnderTest->handleReject();
+}
+
+TEST_F(ApplicationSmsTestSuite, shallDisplaySmsListOnEntryToSmsListState)
+{
+    static std::vector<Sms> emptySmsList{};
+
+    EXPECT_CALL(smsDbMock, getAllSms())
+        .WillOnce(ReturnRef(emptySmsList));
+    EXPECT_CALL(smsDbMock, getUnreadCount())
+        .WillRepeatedly(Return(0));
+    EXPECT_CALL(userPortMock, displaySmsList(_));
+
+    objectUnderTest->handleMenuSelection(1);
+}
+
+TEST_F(ApplicationSmsTestSuite, shallReturnToConnectedStateOnRejectInSmsListState)
+{
+    std::vector<Sms> messages = {};
+    EXPECT_CALL(smsDbMock, getAllSms()).WillRepeatedly(ReturnRef(messages));
+    EXPECT_CALL(smsDbMock, getUnreadCount()).WillRepeatedly(Return(0));
+    EXPECT_CALL(userPortMock, displaySmsList(_));
+    EXPECT_CALL(userPortMock, showNewSms(false))
+        .Times(::testing::AtLeast(1));
+
+    objectUnderTest->handleMenuSelection(1);
+}
+
+TEST_F(ApplicationSmsTestSuite, shallHandleSmsReceiveInSmsListState)
+{
+    std::vector<Sms> messages = {};
+
+    EXPECT_CALL(smsDbMock, getAllSms())
+        .WillRepeatedly(ReturnRef(messages));
+
+    EXPECT_CALL(smsDbMock, getUnreadCount())
+        .WillRepeatedly(Return(1));
+
+    EXPECT_CALL(userPortMock, displaySmsList(_))
+        .Times(::testing::AtLeast(1));
+
+    EXPECT_CALL(userPortMock, showNewSms(true))
+        .Times(::testing::AtLeast(1));
+
+    objectUnderTest->handleMenuSelection(1);
+
+    EXPECT_CALL(smsDbMock, addReceivedSms(PHONE_NUMBER, "Hello world"))
+        .WillOnce(Return(1));
+
+    objectUnderTest->handleSmsReceived(PHONE_NUMBER, "Hello world");
+}
+
+TEST_F(ApplicationSmsTestSuite, shallDisplaySmsListOnRejectFromViewSmsContentStateReplacement)
+{
+    static std::vector<Sms> emptySmsList{};
+
+    EXPECT_CALL(smsDbMock, getAllSms())
+        .WillRepeatedly(ReturnRef(emptySmsList));
+
+    EXPECT_CALL(smsDbMock, getUnreadCount())
+        .WillRepeatedly(Return(0));
+
+    EXPECT_CALL(userPortMock, displaySmsList(::testing::_));
+
+    EXPECT_CALL(userPortMock, showNewSms(::testing::_)).Times(::testing::AtLeast(1));
+
+    objectUnderTest->handleMenuSelection(1);
+    objectUnderTest->handleReject();
 }
 
 

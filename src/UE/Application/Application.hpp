@@ -14,11 +14,13 @@ using common::ILogger;
 class Application : public IEventsHandler
 {
 public:
-    Application(PhoneNumber phoneNumber,
-                ILogger& iLogger,
-                IBtsPort& bts,
-                IUserPort& user,
-                ITimerPort& timer);
+  Application(common::PhoneNumber phoneNumber,
+          ILogger& iLogger,
+          IBtsPort& bts,
+          IUserPort& user,
+          ITimerPort& timer,
+          ISmsDb& smsDb);
+
     ~Application();
 
     // ITimerEventsHandler interface

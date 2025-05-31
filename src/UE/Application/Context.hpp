@@ -14,7 +14,7 @@ struct Context
     IBtsPort& bts;
     IUserPort& user;
     ITimerPort& timer;
-    SmsDb smsDb;
+    ISmsDb& smsDb;
     std::unique_ptr<IEventsHandler> state;
     common::PhoneNumber phoneNumber;
 

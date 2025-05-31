@@ -17,5 +17,6 @@ add_library(${PROJECT_NAME} ${SRC_LIST}
         States/ViewSmsContentState.hpp
         States/SmsComposeState.cpp
         States/SmsComposeState.hpp
+        ISmsDb.hpp
 )
 target_link_libraries(${PROJECT_NAME} Common)

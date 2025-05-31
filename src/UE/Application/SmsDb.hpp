@@ -1,25 +1,27 @@
 #pragma once
 
 #include "Sms.hpp"
+#include "ISmsDb.hpp"
 #include <vector>
-#include <cstddef>
 #include <optional>
 
 namespace ue
 {
 
-class SmsDb
+class SmsDb : public ISmsDb
 {
     std::vector<Sms> messages;
     std::optional<std::size_t> lastSentIndex;
 
 public:
     SmsDb() = default;
-    std::size_t addReceivedSms(common::PhoneNumber source, const std::string& text);
-    std::size_t addSentSms(common::PhoneNumber to, const std::string& text);
-    std::vector<Sms>& getAllSms();
-    std::size_t getUnreadCount() const;
+
+    std::size_t addReceivedSms(common::PhoneNumber source, const std::string& text) override;
+    std::size_t addSentSms(common::PhoneNumber to, const std::string& text) override;
+    std::vector<Sms>& getAllSms() override;
+    std::size_t getUnreadCount() const override;
 };
 
-} // namespace ue
+}
+
 
