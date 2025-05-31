@@ -10,11 +10,13 @@ namespace ue
 
 struct Context
 {
-    common::ILogger &logger;
-    IBtsPort &bts;
-    IUserPort &user;
-    ITimerPort &timer;
-    SmsDb smsDb;
+
+    common::ILogger& logger;
+    IBtsPort& bts;
+    IUserPort& user;
+    ITimerPort& timer;
+    ISmsDb& smsDb;
+
     std::unique_ptr<IEventsHandler> state;
     common::PhoneNumber phoneNumber;
 

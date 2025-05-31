@@ -2,6 +2,7 @@
 #include "ApplicationEnvironmentFactory.hpp"
 #include "Ports/BtsPort.hpp"
 #include "Ports/TimerPort.hpp"
+#include "Application/ISmsDb.hpp"
 #include "Ports/UserPort.hpp"
 
 int main(int argc, char *argv[])
@@ -18,7 +19,8 @@ int main(int argc, char *argv[])
     BtsPort bts(logger, tranport, phoneNumber);
     UserPort user(logger, gui, phoneNumber);
     TimerPort timer(logger);
-    Application app(phoneNumber, logger, bts, user, timer);
+    SmsDb smsDb;
+    Application app(phoneNumber, logger, bts, user, timer,smsDb);
     bts.start(app);
     user.start(app);
     timer.start(app);

@@ -5,9 +5,15 @@
 namespace ue
 {
 
-Application::Application(common::PhoneNumber phoneNumber, common::ILogger &iLogger, IBtsPort &bts, IUserPort &user,
-                         ITimerPort &timer)
-    : context{iLogger, bts, user, timer}, logger(iLogger, "[APP] ")
+Application::Application(common::PhoneNumber phoneNumber,
+                         common::ILogger& iLogger,
+                         IBtsPort& bts,
+                         IUserPort& user,
+                         ITimerPort& timer,
+                         ISmsDb& smsDb)
+    : context{iLogger, bts, user, timer, smsDb, nullptr, phoneNumber},
+      logger(iLogger, "[APP] ")
+
 {
     logger.logInfo("Started");
     context.setState<NotConnectedState>();
