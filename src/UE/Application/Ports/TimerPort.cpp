@@ -3,9 +3,9 @@
 namespace ue
 {
 
-TimerPort::TimerPort(common::ILogger &logger)
-    : logger(logger, "[TIMER PORT]")
-{}
+TimerPort::TimerPort(common::ILogger &logger) : logger(logger, "[TIMER PORT]")
+{
+}
 
 void TimerPort::start(ITimerEventsHandler &handler)
 {
@@ -19,7 +19,7 @@ void TimerPort::stop()
     handler = nullptr;
 }
 
-    void TimerPort::startTimer(Duration duration)
+void TimerPort::startTimer(Duration duration)
 {
 
     std::lock_guard<std::mutex> lock(mtx);
@@ -31,11 +31,13 @@ void TimerPort::stop()
 
     timerThread = std::thread([this, duration]() {
         std::unique_lock<std::mutex> lock(mtx);
-        if (cv.wait_for(lock, duration, [this]() { return shouldStop; })) {
+        if (cv.wait_for(lock, duration, [this]() { return shouldStop; }))
+        {
             logger.logDebug("Timer cancelled before expiration");
             return;
         }
-        if (timerIsRunning && handler) {
+        if (timerIsRunning && handler)
+        {
             logger.logInfo("Timer expired, calling handleTimeout");
             handler->handleTimeout();
         }
@@ -44,7 +46,7 @@ void TimerPort::stop()
     timerThread.detach();
 }
 
-    void TimerPort::stopTimer()
+void TimerPort::stopTimer()
 {
     {
         std::lock_guard<std::mutex> lock(mtx);
@@ -55,4 +57,4 @@ void TimerPort::stop()
     logger.logDebug("Stop timer");
 }
 
-}
+} // namespace ue

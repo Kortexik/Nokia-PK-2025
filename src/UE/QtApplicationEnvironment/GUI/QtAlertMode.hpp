@@ -2,10 +2,9 @@
 
 #include <QLabel>
 
-#include "UeGui/ITextMode.hpp"
 #include "QtSubmitTextEdit.hpp"
 #include "QtUeModeWidget.hpp"
-
+#include "UeGui/ITextMode.hpp"
 
 namespace ue
 {
@@ -13,25 +12,23 @@ namespace ue
 class QtAlertMode : public QtUeModeWidget, public IUeGui::ITextMode
 {
     Q_OBJECT
-public:
-    QtAlertMode(QtPhoneNumberEdit& phoneNumberEdit,
-                QtStackedWidget& stackedWidget);
+ public:
+    QtAlertMode(QtPhoneNumberEdit &phoneNumberEdit, QtStackedWidget &stackedWidget);
 
-    void setText(const std::string& text) override;
+    void setText(const std::string &text) override;
 
-private:
+ private:
     void constructGUI();
     void connectSignals();
 
     QLabel alertText;
 
-signals:
+ signals:
     void setTextSignal(QString);
 
-private slots:
+ private slots:
     void activateSlot() override;
     void setTextSlot(QString);
 };
 
-}
-
+} // namespace ue

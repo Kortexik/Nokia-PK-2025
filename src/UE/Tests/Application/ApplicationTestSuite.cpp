@@ -8,7 +8,8 @@
 #include "Mocks/IMockSmsDb.hpp"
 #include "Mocks/ITimerPortMock.hpp"
 #include "Mocks/IUserPortMock.hpp"
-
+#include "Mocks/ITimerPortMock.hpp"
+#include "Mocks/IUserPortMock.hpp"
 #include <memory>
 
 namespace ue
@@ -17,7 +18,7 @@ using namespace ::testing;
 
 class ApplicationTestSuite : public Test
 {
-protected:
+ protected:
     const common::PhoneNumber PHONE_NUMBER{112};
     const common::BtsId BTS_ID{40};
     NiceMock<common::ILoggerMock> loggerMock;
@@ -36,10 +37,11 @@ protected:
     PHONE_NUMBER, loggerMock, btsPortMock, userPortMock, timerPortMock, smsDbMock
     );
 
+
     }
 };
 
-    //NOT CONNECTED
+// NOT CONNECTED
 
 struct ApplicationNotConnectedTestSuite : ApplicationTestSuite
 {
@@ -59,7 +61,7 @@ TEST_F(ApplicationNotConnectedTestSuite, shallSendAttachRequestOnSib)
     sendAttachRequest();
 }
 
-    //CONNECTING
+// CONNECTING
 
 struct ApplicationConnectingTestSuite : ApplicationNotConnectedTestSuite
 {
@@ -95,7 +97,7 @@ TEST_F(ApplicationConnectingTestSuite, shallShowNotConnectedOnTimeout)
     objectUnderTest->handleTimeout();
 }
 
-    //CONNECTED
+// CONNECTED
 
 struct ApplicationConnectedTestSuite : ApplicationConnectingTestSuite
 {
@@ -119,7 +121,7 @@ TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconnected)
     objectUnderTest->handleDisconnected();
 }
 
-    TEST_F(ApplicationConnectedTestSuite, shallShowIncomingCallRequest)
+TEST_F(ApplicationConnectedTestSuite, shallShowIncomingCallRequest)
 {
     using namespace std::chrono_literals;
     EXPECT_CALL(userPortMock, showCallRequest(REMOTE_PHONE_NUMBER));
@@ -127,17 +129,17 @@ TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconnected)
     objectUnderTest->handleCallRequest(REMOTE_PHONE_NUMBER);
 }
 
-    TEST_F(ApplicationConnectedTestSuite, shallShowImCalling)
+TEST_F(ApplicationConnectedTestSuite, shallShowImCalling)
 {
     using namespace std::chrono_literals;
     EXPECT_CALL(userPortMock, showDialing());
     EXPECT_CALL(btsPortMock, sendCallRequest(REMOTE_PHONE_NUMBER));
-    EXPECT_CALL(userPortMock,waitingForCallRespond(REMOTE_PHONE_NUMBER) );
+    EXPECT_CALL(userPortMock, waitingForCallRespond(REMOTE_PHONE_NUMBER));
     EXPECT_CALL(timerPortMock, startTimer(30000ms));
     objectUnderTest->handleDial(REMOTE_PHONE_NUMBER);
 }
 
-    TEST_F(ApplicationConnectedTestSuite, shallDropCallOnCallRequestReject)
+TEST_F(ApplicationConnectedTestSuite, shallDropCallOnCallRequestReject)
 {
 
     using namespace std::chrono_literals;
@@ -153,7 +155,7 @@ TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconnected)
     EXPECT_CALL(userPortMock, showConnected());
     objectUnderTest->handleReject();
 }
-    TEST_F(ApplicationConnectedTestSuite, shallDropCallOnCallRequestTimeout)
+TEST_F(ApplicationConnectedTestSuite, shallDropCallOnCallRequestTimeout)
 {
 
     using namespace std::chrono_literals;
@@ -169,7 +171,8 @@ TEST_F(ApplicationConnectedTestSuite, shallShowNotConnectedOnDisconnected)
     EXPECT_CALL(userPortMock, showConnected());
     objectUnderTest->handleTimeout();
 }
-    TEST_F(ApplicationConnectedTestSuite, shallAcceptIncomingCall) {
+TEST_F(ApplicationConnectedTestSuite, shallAcceptIncomingCall)
+{
     using namespace std::chrono_literals;
 
     EXPECT_CALL(userPortMock, showDialing());
@@ -298,7 +301,6 @@ TEST_F(ApplicationSmsTestSuite, shallDisplaySmsListOnRejectFromViewSmsContentSta
 
 
     //Talking
-
 struct ApplicationTalkingTestSuite : ApplicationConnectedTestSuite
 {
     void SetUp() override
@@ -307,7 +309,8 @@ struct ApplicationTalkingTestSuite : ApplicationConnectedTestSuite
         ApplicationConnectedTestSuite::SetUp();
         changeStateToTalking();
     }
-    void changeStateToTalking() {
+    void changeStateToTalking()
+    {
         using namespace std::chrono_literals;
 
         EXPECT_CALL(userPortMock, showDialing());
@@ -324,34 +327,33 @@ struct ApplicationTalkingTestSuite : ApplicationConnectedTestSuite
     }
 };
 TEST_F(ApplicationTalkingTestSuite, shallHandleDropCallBySelf)
-    {
-        EXPECT_CALL(btsPortMock, sendCallDrop(PHONE_NUMBER));
-        EXPECT_CALL(userPortMock, showCallDropped(PHONE_NUMBER));
-        EXPECT_CALL(userPortMock, showConnected());
+{
+    EXPECT_CALL(btsPortMock, sendCallDrop(PHONE_NUMBER));
+    EXPECT_CALL(userPortMock, showCallDropped(PHONE_NUMBER));
+    EXPECT_CALL(userPortMock, showConnected());
 
-        objectUnderTest->handleReject();
-    }
+    objectUnderTest->handleReject();
+}
 
 TEST_F(ApplicationTalkingTestSuite, shallHandleDropCallByRemote)
-    {
-        using namespace std::chrono_literals;
+{
+    using namespace std::chrono_literals;
 
+    EXPECT_CALL(userPortMock, showCallDroppedAfterTalk(PHONE_NUMBER));
+    EXPECT_CALL(userPortMock, showConnected());
+    objectUnderTest->handleCallDropped(PHONE_NUMBER);
+}
 
-        EXPECT_CALL(userPortMock, showCallDroppedAfterTalk(PHONE_NUMBER));
-        EXPECT_CALL(userPortMock, showConnected());
-        objectUnderTest->handleCallDropped(PHONE_NUMBER);
-    }
-
-    TEST_F(ApplicationTalkingTestSuite, shallRestartTimerBySendMessage)
+TEST_F(ApplicationTalkingTestSuite, shallRestartTimerBySendMessage)
 {
     using namespace std::chrono_literals;
     std::string test_f = "test_f";
     EXPECT_CALL(timerPortMock, stopTimer());
-    EXPECT_CALL(btsPortMock, sendCallTalk(PHONE_NUMBER,test_f));
+    EXPECT_CALL(btsPortMock, sendCallTalk(PHONE_NUMBER, test_f));
     EXPECT_CALL(timerPortMock, startTimer(120000ms));
-    objectUnderTest->handleSendCallTalk(PHONE_NUMBER,test_f);
+    objectUnderTest->handleSendCallTalk(PHONE_NUMBER, test_f);
 }
-    TEST_F(ApplicationTalkingTestSuite, shallRestartTimerByReceiveMessage)
+TEST_F(ApplicationTalkingTestSuite, shallRestartTimerByReceiveMessage)
 {
     using namespace std::chrono_literals;
     std::string test_f = "test_f";
@@ -361,6 +363,4 @@ TEST_F(ApplicationTalkingTestSuite, shallHandleDropCallByRemote)
     objectUnderTest->handleReceivedCallTalk(test_f);
 }
 
-
-
-}
+} // namespace ue

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "IApplicationEnvironment.hpp"
+#include "Config/MultiLineConfig.hpp"
 #include "GUI/QtApplication.hpp"
-#include "Transport/Transport.hpp"
-#include <QApplication>
+#include "IApplicationEnvironment.hpp"
 #include "Logger/Logger.hpp"
 #include "Logger/PrefixedLogger.hpp"
-#include "Config/MultiLineConfig.hpp"
+#include "Transport/Transport.hpp"
+#include <QApplication>
 #include <fstream>
 
 namespace ue
@@ -14,17 +14,17 @@ namespace ue
 
 class ApplicationEnvironment : public IApplicationEnvironment
 {
-public:
-    ApplicationEnvironment(int &argc, char* argv[]);
-    IUeGui& getUeGui() override;
-    ITransport& getTransportToBts() override;
-    ILogger& getLogger() override;
+ public:
+    ApplicationEnvironment(int &argc, char *argv[]);
+    IUeGui &getUeGui() override;
+    ITransport &getTransportToBts() override;
+    ILogger &getLogger() override;
     PhoneNumber getMyPhoneNumber() const override;
-    std::int32_t getProperty(std::string const& name, std::int32_t defaultValue) const override;
+    std::int32_t getProperty(std::string const &name, std::int32_t defaultValue) const override;
 
     void startMessageLoop() override;
 
-private:
+ private:
     std::unique_ptr<common::MultiLineConfig> configuration;
     PhoneNumber myPhoneNumber;
     std::ofstream logFile;
@@ -35,9 +35,7 @@ private:
     QtUeGui gui;
     Transport transport;
 
-    static std::unique_ptr<common::MultiLineConfig> readConfiguration(int argc, char* argv[]);
-
-
+    static std::unique_ptr<common::MultiLineConfig> readConfiguration(int argc, char *argv[]);
 };
 
-}
+} // namespace ue

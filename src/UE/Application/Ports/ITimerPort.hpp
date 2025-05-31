@@ -7,7 +7,7 @@ namespace ue
 
 class ITimerEventsHandler
 {
-public:
+ public:
     virtual ~ITimerEventsHandler() = default;
 
     virtual void handleTimeout() = 0;
@@ -15,7 +15,7 @@ public:
 
 class ITimerPort
 {
-public:
+ public:
     using Duration = std::chrono::milliseconds;
 
     virtual ~ITimerPort() = default;
@@ -24,4 +24,4 @@ public:
     virtual void stopTimer() = 0;
 };
 
-}
+} // namespace ue

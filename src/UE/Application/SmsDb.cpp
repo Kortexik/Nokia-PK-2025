@@ -5,7 +5,7 @@
 namespace ue
 {
 
-std::size_t SmsDb::addReceivedSms(common::PhoneNumber source, const std::string& message)
+std::size_t SmsDb::addReceivedSms(common::PhoneNumber source, const std::string &message)
 {
     Sms sms = Sms(source, message, Sms::Status::UNREAD);
     sms.setDirection(Sms::Direction::IN);
@@ -13,7 +13,7 @@ std::size_t SmsDb::addReceivedSms(common::PhoneNumber source, const std::string&
     return messages.size() - 1;
 }
 
-std::size_t SmsDb::addSentSms(common::PhoneNumber to, const std::string& message)
+std::size_t SmsDb::addSentSms(common::PhoneNumber to, const std::string &message)
 {
     Sms sms = Sms(to, message, Sms::Status::SENT);
     sms.setDirection(Sms::Direction::OUT);
@@ -25,9 +25,9 @@ std::size_t SmsDb::addSentSms(common::PhoneNumber to, const std::string& message
 std::size_t SmsDb::getUnreadCount() const
 {
     std::size_t amount = 0;
-    for(Sms message : messages)
+    for (Sms message : messages)
     {
-        if(message.getStatus() == Sms::Status::UNREAD)
+        if (message.getStatus() == Sms::Status::UNREAD)
         {
             amount++;
         }
@@ -35,11 +35,9 @@ std::size_t SmsDb::getUnreadCount() const
     return amount;
 }
 
-std::vector<Sms>& SmsDb::getAllSms()
+std::vector<Sms> &SmsDb::getAllSms()
 {
     return messages;
 }
 
 } // namespace ue
-
-

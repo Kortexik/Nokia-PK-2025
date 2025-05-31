@@ -7,4 +7,3 @@ namespace ue
 // where IApplicationEnvironment will be specialized
 // and thus createApplicationEnvironment() easily implemented.
 }
-

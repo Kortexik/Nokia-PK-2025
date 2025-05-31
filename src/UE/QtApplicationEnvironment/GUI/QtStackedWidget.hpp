@@ -9,18 +9,17 @@
 namespace ue
 {
 
-using ILogger=common::ILogger;
+using ILogger = common::ILogger;
 
 class QtStackedWidget : public QStackedWidget
 {
     Q_OBJECT
-public:
+ public:
     QtStackedWidget();
     ~QtStackedWidget();
 
-    int addModeWidget(QWidget* widget);
+    int addModeWidget(QWidget *widget);
     using QStackedWidget::setCurrentIndex;
 };
 
-}
-
+} // namespace ue

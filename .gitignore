@@ -12,6 +12,7 @@ _deps
 .idea/
 
 build
+
 src/cmake-build*
 .vscode/
 *.a

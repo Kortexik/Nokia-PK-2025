@@ -7,9 +7,9 @@ namespace ue
 
 class IUeGui::ITextMode
 {
-public:
+ public:
     virtual ~ITextMode() = default;
-    virtual void setText(const std::string& text) = 0;
+    virtual void setText(const std::string &text) = 0;
 };
 
-}
+} // namespace ue

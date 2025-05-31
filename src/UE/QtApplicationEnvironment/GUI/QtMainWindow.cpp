@@ -36,4 +36,4 @@ void QtMainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-}
+} // namespace ue

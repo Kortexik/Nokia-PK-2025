@@ -4,13 +4,13 @@
 namespace ue
 {
 
-TalkingState::TalkingState(Context& context, common::PhoneNumber callingNumber)
+TalkingState::TalkingState(Context &context, common::PhoneNumber callingNumber)
     : ConnectedState(context), callingNumber(callingNumber)
-    {
-        context.user.setCallMode(callingNumber);
-        using namespace std::chrono_literals;
-        context.timer.startTimer(120s);
-    }
+{
+    context.user.setCallMode(callingNumber);
+    using namespace std::chrono_literals;
+    context.timer.startTimer(120s);
+}
 
 void TalkingState::handleCallRequest(common::PhoneNumber from)
 {
@@ -58,7 +58,7 @@ void TalkingState::handleSendCallDropped(common::PhoneNumber from)
 void TalkingState::handleSendCallTalk(common::PhoneNumber to, const std::string &msg)
 {
     context.timer.stopTimer();
-    context.bts.sendCallTalk(to,msg);
+    context.bts.sendCallTalk(to, msg);
     using namespace std::chrono_literals;
     context.timer.startTimer(120s);
 }
@@ -70,4 +70,4 @@ void TalkingState::handleReceivedCallTalk(const std::string &text)
     using namespace std::chrono_literals;
     context.timer.startTimer(120s);
 }
-}
+} // namespace ue

@@ -9,16 +9,15 @@ class QtSmsComposeMode;
 
 class QtTextViewMode : public IUeGui::ITextMode
 {
-public:
-    QtTextViewMode(QtSmsComposeMode& baseMode);
+ public:
+    QtTextViewMode(QtSmsComposeMode &baseMode);
     void init();
     void activate();
 
-    void setText(const std::string&) override;
+    void setText(const std::string &) override;
 
-private:
-    QtSmsComposeMode& baseMode;
+ private:
+    QtSmsComposeMode &baseMode;
 };
 
-}
-
+} // namespace ue

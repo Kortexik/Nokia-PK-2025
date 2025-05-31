@@ -1,25 +1,17 @@
 #include "QtUeGui.hpp"
 
-#include <QPalette>
 #include <QApplication>
+#include <QPalette>
 
 namespace ue
 {
 
 QtUeGui::QtUeGui(ILogger &logger)
- : logger(logger),
-   mainWindow(),
-   centralWidget(&mainWindow),
-   frame(&centralWidget),
-   acceptButton(&centralWidget),
-   rejectButton(&centralWidget),
-   homeButton(&centralWidget),
-   listViewMode(phoneNumberEdit, stackedWidget),
-   callMode(phoneNumberEdit, stackedWidget),
-   dialMode(callMode, phoneNumberEdit),
-   smsComposeMode(phoneNumberEdit, stackedWidget),
-   alertMode(phoneNumberEdit, stackedWidget),
-   textViewMode(smsComposeMode)
+    : logger(logger), mainWindow(), centralWidget(&mainWindow), frame(&centralWidget), acceptButton(&centralWidget),
+      rejectButton(&centralWidget), homeButton(&centralWidget), listViewMode(phoneNumberEdit, stackedWidget),
+      callMode(phoneNumberEdit, stackedWidget), dialMode(callMode, phoneNumberEdit),
+      smsComposeMode(phoneNumberEdit, stackedWidget), alertMode(phoneNumberEdit, stackedWidget),
+      textViewMode(smsComposeMode)
 {
     initGUI();
     initInternalSignals();
@@ -27,7 +19,6 @@ QtUeGui::QtUeGui(ILogger &logger)
 
 QtUeGui::~QtUeGui()
 {
-
 }
 
 void QtUeGui::start()
@@ -38,7 +29,7 @@ void QtUeGui::start()
 void QtUeGui::initGUI()
 {
     // TODO: change the fixed sizes into relative values
-    QSize cellPhoneSize(400,750);
+    QSize cellPhoneSize(400, 750);
     mainWindow.setFixedSize(cellPhoneSize);
     mainWindow.setWindowTitle("UE <no-number>");
 
@@ -54,8 +45,8 @@ void QtUeGui::initGUI()
 
     // init stacked widget
     frame.setFrameStyle(QFrame::Box | QFrame::Raised);
-    frame.setFixedSize(cellPhoneSize.width()*307/412,cellPhoneSize.height()*540/800);
-    frame.move(cellPhoneSize.width()*53/412,cellPhoneSize.height()*90/800);
+    frame.setFixedSize(cellPhoneSize.width() * 307 / 412, cellPhoneSize.height() * 540 / 800);
+    frame.move(cellPhoneSize.width() * 53 / 412, cellPhoneSize.height() * 90 / 800);
 
     initLayout();
     addElements();
@@ -64,21 +55,22 @@ void QtUeGui::initGUI()
 
 void QtUeGui::initInternalSignals()
 {
-    QObject::connect(&acceptButton,SIGNAL(clicked()),this, SLOT(onAcceptClicked()));
-    QObject::connect(&rejectButton,SIGNAL(clicked()),this, SLOT(onRejectClicked()));
-    QObject::connect(&homeButton,SIGNAL(clicked()),this,SLOT(onHomeClicked()));
+    QObject::connect(&acceptButton, SIGNAL(clicked()), this, SLOT(onAcceptClicked()));
+    QObject::connect(&rejectButton, SIGNAL(clicked()), this, SLOT(onRejectClicked()));
+    QObject::connect(&homeButton, SIGNAL(clicked()), this, SLOT(onHomeClicked()));
 
-    QObject::connect(&listViewMode,SIGNAL(itemDoubleClicked()),this,SLOT(onItemSelected()));
-    QObject::connect(&callMode,SIGNAL(textEntered()),this,SLOT(onTextEntered()));
+    QObject::connect(&listViewMode, SIGNAL(itemDoubleClicked()), this, SLOT(onItemSelected()));
+    QObject::connect(&callMode, SIGNAL(textEntered()), this, SLOT(onTextEntered()));
 
-    QObject::connect(this,SIGNAL(setConnectedStateSignal(QString, bool)),this,SLOT(setConnectedStateSlot(QString, bool)));
-    QObject::connect(this,SIGNAL(setNewMessageSignal(bool)),this,SLOT(setNewMessageSlot(bool)));
+    QObject::connect(this, SIGNAL(setConnectedStateSignal(QString, bool)), this,
+                     SLOT(setConnectedStateSlot(QString, bool)));
+    QObject::connect(this, SIGNAL(setNewMessageSignal(bool)), this, SLOT(setNewMessageSlot(bool)));
 }
 
 void QtUeGui::initLayout()
 {
-    phoneNumberLayout.setContentsMargins(2,2,2,2);
-    mainLayout.setContentsMargins(2,2,2,2);
+    phoneNumberLayout.setContentsMargins(2, 2, 2, 2);
+    mainLayout.setContentsMargins(2, 2, 2, 2);
 
     mainLayout.addLayout(&phoneNumberLayout);
     mainLayout.addWidget(&stackedWidget);
@@ -96,12 +88,12 @@ void QtUeGui::addPhoneNumberControls()
 {
     phoneNumberEdit.setMaximumHeight(30);
     phoneNumberEdit.setMinimumHeight(30);
-    //phoneNumberTextEdit.viewport()->setAutoFillBackground(false);
+    // phoneNumberTextEdit.viewport()->setAutoFillBackground(false);
 
-    connectedStateLabel.setFont(QFont( "Arial Narrow", 12, QFont::Bold));
+    connectedStateLabel.setFont(QFont("Arial Narrow", 12, QFont::Bold));
     connectedStateLabel.setText(" C");
     setConnectedStateSlot("", false);
-    newMessageLabel.setFont(QFont( "Arial Narrow", 12, QFont::Bold));
+    newMessageLabel.setFont(QFont("Arial Narrow", 12, QFont::Bold));
     newMessageLabel.setText(" M ");
     setNewMessageSlot(false);
 
@@ -114,31 +106,30 @@ void QtUeGui::addButtons()
 {
     int buttonsCOmmonY = 620;
 
-    //TODO: remove duplicated code
+    // TODO: remove duplicated code
 
     setButtonLayout(acceptButton);
     setButtonLayout(rejectButton);
     setButtonLayout(homeButton);
 
     acceptButton.setIcon(QIcon(QPixmap("images/call_acc.png")));
-    acceptButton.move(70,buttonsCOmmonY);
+    acceptButton.move(70, buttonsCOmmonY);
 
     homeButton.setIcon(QIcon(QPixmap("images/sms.png")));
-    homeButton.move(176,buttonsCOmmonY);
+    homeButton.move(176, buttonsCOmmonY);
 
     rejectButton.setIcon(QIcon(QPixmap("images/call_rej.png")));
-    rejectButton.move(290,buttonsCOmmonY);
+    rejectButton.move(290, buttonsCOmmonY);
 }
 
 void QtUeGui::setButtonLayout(QPushButton &btn)
 {
-    QSize stdBtnSize(48,48);
+    QSize stdBtnSize(48, 48);
 
     btn.setMinimumSize(stdBtnSize);
     btn.setMaximumSize(stdBtnSize);
     btn.setIconSize(stdBtnSize);
-    btn.setStyleSheet( "background-color: rgba( 255, 255, 255, 0% );" );
-
+    btn.setStyleSheet("background-color: rgba( 255, 255, 255, 0% );");
 }
 
 void QtUeGui::initModes()
@@ -153,7 +144,7 @@ void QtUeGui::initModes()
 
 void QtUeGui::onAcceptClicked()
 {
-    if(acceptCallback)
+    if (acceptCallback)
     {
         acceptCallback();
     }
@@ -161,7 +152,7 @@ void QtUeGui::onAcceptClicked()
 
 void QtUeGui::onRejectClicked()
 {
-    if(rejectCallback)
+    if (rejectCallback)
     {
         rejectCallback();
     }
@@ -169,7 +160,7 @@ void QtUeGui::onRejectClicked()
 
 void QtUeGui::onHomeClicked()
 {
-    if(homeCallback)
+    if (homeCallback)
     {
         homeCallback();
     }
@@ -200,7 +191,7 @@ void QtUeGui::setRejectCallback(Callback callback)
     rejectCallback = callback;
 }
 
-void QtUeGui::setTitle(const std::string& title)
+void QtUeGui::setTitle(const std::string &title)
 {
     mainWindow.setWindowTitle(QString::fromStdString(title));
 }
@@ -213,7 +204,8 @@ void QtUeGui::showConnected()
 
 void QtUeGui::showConnecting()
 {
-    setAlertMode().setText("Connecting");;
+    setAlertMode().setText("Connecting");
+    ;
     emit setConnectedStateSignal("Connecting", false);
 }
 
@@ -247,41 +239,40 @@ void QtUeGui::setNewMessageSlot(bool value)
     newMessageLabel.setToolTip(value ? "New message(s)" : "No new messages");
 }
 
-template <typename ModeObject>
-ModeObject& QtUeGui::activateMode(ModeObject& modeObject)
+template <typename ModeObject> ModeObject &QtUeGui::activateMode(ModeObject &modeObject)
 {
     modeObject.activate();
     return modeObject;
 }
 
-IUeGui::IListViewMode& QtUeGui::setListViewMode()
+IUeGui::IListViewMode &QtUeGui::setListViewMode()
 {
     return activateMode(listViewMode);
 }
 
-IUeGui::ISmsComposeMode& QtUeGui::setSmsComposeMode()
+IUeGui::ISmsComposeMode &QtUeGui::setSmsComposeMode()
 {
     return activateMode(smsComposeMode);
 }
 
-IUeGui::IDialMode& QtUeGui::setDialMode()
+IUeGui::IDialMode &QtUeGui::setDialMode()
 {
     return activateMode(dialMode);
 }
 
-IUeGui::ICallMode& QtUeGui::setCallMode()
+IUeGui::ICallMode &QtUeGui::setCallMode()
 {
     return activateMode(callMode);
 }
 
-IUeGui::ITextMode& QtUeGui::setAlertMode()
+IUeGui::ITextMode &QtUeGui::setAlertMode()
 {
     return activateMode(alertMode);
 }
 
-IUeGui::ITextMode& QtUeGui::setViewTextMode()
+IUeGui::ITextMode &QtUeGui::setViewTextMode()
 {
     return activateMode(textViewMode);
 }
 
-}
+} // namespace ue

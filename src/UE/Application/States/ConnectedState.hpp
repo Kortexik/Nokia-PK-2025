@@ -7,10 +7,10 @@ namespace ue
 
 class ConnectedState : public BaseState
 {
-public:
-    ConnectedState(Context& context);
+ public:
+    ConnectedState(Context &context);
     void handleDisconnected() final;
-    void handleSmsReceived(common::PhoneNumber from, const std::string& message) override;
+    void handleSmsReceived(common::PhoneNumber from, const std::string &message) override;
     void handleCallRequest(common::PhoneNumber from) override;
     void handleAccept() override;
     void handleReject() override;
@@ -20,8 +20,9 @@ public:
     void handleCallDropped(common::PhoneNumber from) override;
     void handleCallAccepted(common::PhoneNumber from) override;
     void handleSendCallDropped(common::PhoneNumber from);
-private:
+
+ private:
     common::PhoneNumber callingNumber{};
 };
 
-}
+} // namespace ue

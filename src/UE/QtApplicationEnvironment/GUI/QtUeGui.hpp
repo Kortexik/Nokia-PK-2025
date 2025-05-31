@@ -2,40 +2,39 @@
 
 #include "IUeGui.hpp"
 
-#include "QtMainWindow.hpp"
+#include "QtAlertMode.hpp"
 #include "QtCallMode.hpp"
 #include "QtDialMode.hpp"
+#include "QtMainWindow.hpp"
+#include "QtPhoneNumberEdit.hpp"
 #include "QtSelectionListMode.hpp"
 #include "QtSmsComposeMode.hpp"
-#include "QtTextViewMode.hpp"
-#include "QtAlertMode.hpp"
-#include "QtSubmitTextEdit.hpp"
-#include "QtPhoneNumberEdit.hpp"
 #include "QtStackedWidget.hpp"
+#include "QtSubmitTextEdit.hpp"
+#include "QtTextViewMode.hpp"
 
-#include <QWidget>
-#include <QLabel>
+#include <QButtonGroup>
 #include <QDesktopWidget>
 #include <QFrame>
-#include <QButtonGroup>
-#include <QPushButton>
+#include <QLabel>
 #include <QObject>
-#include <QVBoxLayout>
+#include <QPushButton>
 #include <QStackedWidget>
-
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "Logger/ILogger.hpp"
 
 namespace ue
 {
 
-using ILogger=common::ILogger;
+using ILogger = common::ILogger;
 
 class QtUeGui : public QObject, public IUeGui
 {
     Q_OBJECT
-public:
-    QtUeGui(ILogger& logger);
+ public:
+    QtUeGui(ILogger &logger);
     ~QtUeGui();
 
     void start();
@@ -44,32 +43,30 @@ public:
     void setAcceptCallback(Callback) override;
     void setRejectCallback(Callback) override;
 
-    void setTitle(const std::string& title) override;
+    void setTitle(const std::string &title) override;
     void showConnected() override;
     void showConnecting() override;
     void showNotConnected() override;
     void showNewSms(bool present) override;
     void showPeerUserNotAvailable(PhoneNumber peer) override;
 
-
-    IListViewMode& setListViewMode() override;
-    ISmsComposeMode& setSmsComposeMode() override;
-    IDialMode& setDialMode() override;
-    ICallMode& setCallMode() override;
-    ITextMode& setAlertMode() override;
-    ITextMode& setViewTextMode() override;
+    IListViewMode &setListViewMode() override;
+    ISmsComposeMode &setSmsComposeMode() override;
+    IDialMode &setDialMode() override;
+    ICallMode &setCallMode() override;
+    ITextMode &setAlertMode() override;
+    ITextMode &setViewTextMode() override;
 
     int addModeWidget(QWidget *widget);
 
-signals:
+ signals:
     void phoneAcceptClicked();
 
     void setConnectedStateSignal(QString text, bool connected);
     void setNewMessageSignal(bool);
     void showInformationBoxSignal(QString, QString);
 
-private:
-
+ private:
     // callbacks
     IUeGui::Callback acceptCallback;
     IUeGui::Callback rejectCallback;
@@ -84,7 +81,7 @@ private:
     void setButtonLayout(QPushButton &btn);
     void initModes();
 
-    ILogger& logger;
+    ILogger &logger;
     // part of main widget
     QtMainWindow mainWindow;
     QWidget centralWidget;
@@ -113,8 +110,7 @@ private:
     QtAlertMode alertMode;
     QtTextViewMode textViewMode;
 
-
-private slots:
+ private slots:
     void onAcceptClicked();
     void onRejectClicked();
     void onHomeClicked();
@@ -123,9 +119,7 @@ private slots:
     void setConnectedStateSlot(QString text, bool connected);
     void setNewMessageSlot(bool);
 
-private:
-    template <typename ModeObject>
-    ModeObject &activateMode(ModeObject &modeObject);
+ private:
+    template <typename ModeObject> ModeObject &activateMode(ModeObject &modeObject);
 };
-}
-
+} // namespace ue

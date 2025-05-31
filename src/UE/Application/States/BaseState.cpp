@@ -4,8 +4,7 @@ namespace ue
 {
 
 BaseState::BaseState(Context &context, const std::string &name)
-    : context(context),
-      logger(context.logger, "[" + name + "]")
+    : context(context), logger(context.logger, "[" + name + "]")
 {
     logger.logDebug("entry");
 }
@@ -34,15 +33,17 @@ void BaseState::handleAttachReject()
 {
     logger.logError("Unexpected: handleAttachReject");
 }
-void BaseState:: handleDisconnected() {
+void BaseState::handleDisconnected()
+{
     logger.logError("Unexpected: handleDisconnected");
 }
 
-void BaseState::handleSmsReceived(common::PhoneNumber fromNumber, const std::string& message)
+void BaseState::handleSmsReceived(common::PhoneNumber fromNumber, const std::string &message)
 {
     logger.logError("Unexpected: handleSmsReceived from: ", fromNumber, " text: ", message);
 }
-void BaseState::handleSendCallDropped(common::PhoneNumber from) {
+void BaseState::handleSendCallDropped(common::PhoneNumber from)
+{
     logger.logError("Unexpected: handleSendCallDropped");
 }
 
@@ -56,7 +57,8 @@ void BaseState::handleMenuSelection(unsigned int index)
     logger.logError("Unexpected : handleMenuSelection ");
 }
 
-void BaseState::handleReceivedCallTalk(const std::string &text) {
+void BaseState::handleReceivedCallTalk(const std::string &text)
+{
     logger.logError("Unexpected : handleReceivedCallTalk ");
 }
-}
+} // namespace ue

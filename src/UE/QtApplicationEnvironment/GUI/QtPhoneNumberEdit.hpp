@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <QLineEdit>
 
 #include "Messages/PhoneNumber.hpp"
@@ -13,7 +12,7 @@ using common::PhoneNumber;
 class QtPhoneNumberEdit : public QLineEdit
 {
     Q_OBJECT
-public:
+ public:
     QtPhoneNumberEdit();
     ~QtPhoneNumberEdit();
 
@@ -22,5 +21,4 @@ public:
     void enable();
     void disable();
 };
-}
-
+} // namespace ue

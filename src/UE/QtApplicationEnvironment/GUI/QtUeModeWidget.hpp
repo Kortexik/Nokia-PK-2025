@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QWidget>
-#include <QVBoxLayout>
+#include "Logger/ILogger.hpp"
+#include "Messages/PhoneNumber.hpp"
 #include "QtPhoneNumberEdit.hpp"
 #include "QtStackedWidget.hpp"
-#include "Messages/PhoneNumber.hpp"
-#include "Logger/ILogger.hpp"
+#include <QVBoxLayout>
+#include <QWidget>
 
 namespace ue
 {
@@ -13,36 +13,34 @@ namespace ue
 class QtUeModeWidget : public QWidget
 {
     Q_OBJECT
-public:
-    QtUeModeWidget(QtPhoneNumberEdit& phoneNumberEdit,
-                   QtStackedWidget& stackedWidget);
+ public:
+    QtUeModeWidget(QtPhoneNumberEdit &phoneNumberEdit, QtStackedWidget &stackedWidget);
 
     void init();
     void activate();
 
-protected:
-    void addChildWidget(QWidget* childWidget);
+ protected:
+    void addChildWidget(QWidget *childWidget);
 
     void activateWithPhoneNumberEditEnabled();
     void activateWithPhoneNumberEditDisabled();
 
     PhoneNumber getPhoneNumber() const;
 
-private:
+ private:
     void activateThisWidget();
 
     QVBoxLayout mainLayout;
 
-    QtPhoneNumberEdit& phoneNumberEdit;
-    QtStackedWidget& stackedWidget;
+    QtPhoneNumberEdit &phoneNumberEdit;
+    QtStackedWidget &stackedWidget;
     int stackedWidgetIndex;
 
-signals:
+ signals:
     void activateSignal();
 
-protected slots:
+ protected slots:
     virtual void activateSlot() = 0;
 };
 
-}
-
+} // namespace ue
